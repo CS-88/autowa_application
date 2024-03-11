@@ -26,23 +26,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     }
-  },
-  "dependencies": {
-    "expo-image-picker": "~14.7.1",
-    "@expo/vector-icons": "^14.0.0",
-    "react-native-modal": "*",
-    "react-native-paper": "4.9.2",
-    "react-native-screens": "~3.29.0",
-    "react-native-elements": "*",
-    "@react-navigation/stack": "*",
-    "react-native-fast-image": "*",
-    "@react-navigation/native": "*",
-    "react-native-image-picker": "*",
-    "react-native-vector-icons": "10.0.3",
-    "react-native-gesture-handler": "~2.14.0",
-    "@react-navigation/bottom-tabs": "*",
-    "react-native-image-crop-picker": "*",
-    "react-native-safe-area-context": "4.8.2",
-    "react-native-vector-icons/Ionicons": "*"
   }
+  
 }
