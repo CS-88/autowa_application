@@ -13,7 +13,7 @@ export default function Container() {
       <TouchableOpacity onPress={() => handleButtonPress('ConfirmBookings')}>
         <Image
           style={{ width: 120, height: 110 }}
-          source={require('../Images/Service_Centre.png')}
+          source={require('../assets/Service_Centre.png')}
         />
         <View style={{ flexDirection: 'row' }}>
           <Text
@@ -27,7 +27,7 @@ export default function Container() {
           </Text>
           <Image
             style={{ width: 16, height: 16, marginLeft: 7, marginTop: 14 }}
-            source={require('../Images/Check.png')}
+            source={require('../assets/Check.png')}
           />
         </View>
         <Text style={{ fontSize: 15, marginBottom: 4 }}>Location:</Text>
