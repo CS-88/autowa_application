@@ -36,7 +36,7 @@ const MyCarsStack = () => {
   return(
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="MyCars" component={MyCars} />
-      <Stack.Screen name="ServiceRecords" component={ServiceRecords} />
+      {/* <Stack.Screen name="ServiceRecords" component={ServiceRecords} /> */}
     </Stack.Navigator>
   )
 }
