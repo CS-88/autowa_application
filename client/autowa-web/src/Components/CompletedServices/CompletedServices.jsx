@@ -73,13 +73,13 @@ const CompletedServices = () => {
   };
 
   const tasksData = [
-    { id: 1, title: 'Task 1', description: 'Description for Task 1' },
-    { id: 2, title: 'Task 2', description: 'Description for Task 2' },
-    { id: 3, title: 'Task 3', description: 'Description for Task 3' },
-    { id: 4, title: 'Task 4', description: 'Description for Task 4' },
-    { id: 5, title: 'Task 5', description: 'Description for Task 5' },
-    { id: 6, title: 'Task 6', description: 'Description for Task 6' },
-    { id: 7, title: 'Task 7', description: 'Description for Task 1' },
+    { id: 1, title: 'CAL 7021', description: 'Car wash,interior' },
+    { id: 2, title: 'CAN 4586', description: 'Full service' },
+    { id: 3, title: 'CAI 4545', description: 'Full Service' },
+    { id: 4, title: 'KI 4554', description: 'Interior clening' },
+    { id: 5, title: 'CBA 7878', description: 'Body wash' },
+    { id: 6, title: 'CAQ 2222', description: 'Full service' },
+    { id: 7, title: 'CAP 4875', description: 'Description for Task 1' },
   ];
 
   return (
