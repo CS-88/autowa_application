@@ -1,6 +1,5 @@
 const router = require("express").Router();
 let customer = require("../../controllers/customer.controller")
-let multer = require("../../middleware/multer")
 
 //Routes related customer
 router.post("/register", customer.registerCustomer);
