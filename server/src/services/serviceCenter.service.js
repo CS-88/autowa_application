@@ -112,7 +112,7 @@ class FileService {
         }
         catch (err) {
             console.log(err)
-            return { Status: 500, Error: `${err.name} : ${err.message} `, Location: "./src/services/serviceCenter.service.js - findServiceCenter(body)" };
+            return { Status: 500, Error: `${err.name} : ${err.message} `, Location: "./src/services/serviceCenter.service.js - findServiceCenterByEmail(body)" };
         }
     }
 
@@ -125,7 +125,7 @@ class FileService {
         }
         catch (err) {
             console.log(err)
-            return { Status: 500, Error: `${err.name} : ${err.message} `, Location: "./src/services/serviceCenter.service.js - findServiceCenter(body)" };
+            return { Status: 500, Error: `${err.name} : ${err.message} `, Location: "./src/services/serviceCenter.service.js - findServiceCentersByLocation(body)" };
         }
     }
 
