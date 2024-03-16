@@ -4,7 +4,6 @@
     "description": "Express Backend For the Vehicle Monitoring System",
     "main": "server.js",
     "scripts": {
-        "serve": "nodemon serve.js",
         "test": "mocha tests/ --reporter mochawesome --no-timeout --exit"
     },
     "keywords": [

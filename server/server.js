@@ -23,7 +23,7 @@ const corsOptions={
     optionsSuccessStatus:200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 
-app.use("/Public",express.static('Public/Temp'))
+app.use("/public",express.static('public/temp'))
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -35,7 +35,7 @@ app.use('/', (req, res) => {
     res.send({ 
         status: 200,
         message: 'Server Loaded Successfully',
-        Description: name+' RestAPI For a MEAN Application Project',
+        Description: name+' For a MERN Application Project',
         Port: port,
         BaseUrl: url+port
     });
