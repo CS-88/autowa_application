@@ -65,28 +65,19 @@ const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
   return (
     <div style={modalStyle}>
       <div style={contentStyle}>
-        <h2 style={{ marginBottom: '20px' }}>Invoice</h2>
+        <h2 style={{ marginBottom: '20px' }}>INSPECTION REPORT</h2>
         <form style={formStyle}>
           <div className="form-group">
             <label>Name:</label>
             <input type="text" value={data.name} readOnly />
           </div>
-          <div className="form-group">
-            <label>Address:</label>
-            <input type="text" value={data.address} readOnly />
-          </div>
-          <div className="form-group">
-            <label>Tel:</label>
-            <input type="tel" value={data.tel} readOnly />
-          </div>
+         
+          
           <div className="form-group">
             <label>Date:</label>
             <input type="date" readOnly />
           </div>
-          <div className="form-group">
-            <label>Registration No:</label>
-            <input type="text" readOnly />
-          </div>
+          
           <div className="form-group">
             <label>Model/Year:</label>
             <input type="text" readOnly />
@@ -96,8 +87,10 @@ const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
             <input type="text" readOnly />
           </div>
           <div className="form-group">
-            <label>Autowa Invoice</label>
+            <label>ODO Meter:</label>
+            <input type="text" readOnly />
           </div>
+        
           <div className="form-group">
             <label>Service Options:</label>
             <div>
@@ -106,7 +99,6 @@ const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
                   type="radio"
                   name="serviceOption"
                   value="Checked-in"
-                  checked={serviceOption === 'Checked-in'}
                   onChange={() => handleServiceOptionChange('Checked-in')}
                 />
                 Checked-in
@@ -118,7 +110,6 @@ const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
                   type="radio"
                   name="serviceOption"
                   value="Tires and Wheels"
-                  checked={serviceOption === 'Tires and Wheels'}
                   onChange={() => handleServiceOptionChange('Tires and Wheels')}
                 />
                 Tires and Wheels
@@ -126,51 +117,121 @@ const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
             </div>
           </div>
           <div className="form-group">
-            <label>Service:</label>
+            <label>Engine:</label>
             <div>
               <label>
-                <input
-                  type="checkbox"
-                  value="Car wash"
-                  checked={carWashChecked}
-                  onChange={handleCarWashChange}
-                />{' '}
-                Car wash
+                <input type="checkbox" value="Oil Leavel/Condition" /> Oil Leavel/Condition
               </label>
             </div>
             <div>
               <label>
-                <input
-                  type="checkbox"
-                  value="Wash & Vacuum"
-                  checked={washVacuumChecked}
-                  onChange={handleWashVacuumChange}
-                />{' '}
-                Wash & Vacuum
+                <input type="checkbox" value="Mount/Tenstionrs" /> Mount/Tenstionrs
               </label>
             </div>
             <div>
               <label>
-                <input
-                  type="checkbox"
-                  value="Wash & Interior Clean Up"
-                  checked={washInteriorCleanUpChecked}
-                  onChange={handleWashInteriorCleanUpChange}
-                />{' '}
-                Wash & Interior Clean Up
+                <input type="checkbox" value="Steering Oil Leavel" /> Steering Oil Leavel
               </label>
             </div>
             <div>
               <label>
-                <input
-                  type="checkbox"
-                  value="Full Service"
-                  checked={fullServiceChecked}
-                  onChange={handleFullServiceChange}
-                />{' '}
-                Full Service
+                <input type="checkbox" value="Transmisson Oil " /> Transmisson Oil 
               </label>
             </div>
+          </div>
+          <div className="form-group">
+            <label>Cooling & Fuel System:</label>
+            <div>
+              <label>
+                <input type="checkbox" value="Radiator Coolent" /> Radiator Coolent
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" value="A/C Fan" /> A/C Fan
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" value="Air Filter" /> Air Filter
+              </label>
+            </div>
+            
+          </div>
+          <div className="form-group">
+            <label>Electrical Accessories:</label>
+            <div>
+              <label>
+                <input type="checkbox" value="Horn" /> Horn
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" value="Wipers/Washers" /> Wipers/Washers
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" value="Radio" /> Radio
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" value="Heater" /> Heater
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" value="Air Coditioner" /> Air Coditioner
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" value="Temp.Gauge" /> Temp.Gauge
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" value="OilLight/Gauge" /> OilLight/Gauge
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" value="Instrumnets w/Light" /> Instrumnets w/Light
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" value="SRS Function w/Light" /> SRS Function w/Light
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" value="ABS w/light" /> ABS w/light
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" value="Front Light" /> Front Light
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" value="Rear Light" /> Rear Light
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" value="Power shutters" /> Power shutters
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" value="Electrical Mirror" /> Electrical Mirror
+              </label>
+            </div>
+            
+
           </div>
         </form>
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
@@ -184,7 +245,7 @@ const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
             }}
             onClick={handleSendInvoice}
           >
-            Send Invoice
+            Send Service Record
           </button>
           <button
             style={{
