@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Car from './car.png'; // Update the path accordingly
 import InvoiceModal from './InvoiceModal';
+import RecordModal from './recordModal'; // Corrected import path
 
 const CompletedServicesCard = ({ task, onSelect }) => {
   return (
@@ -25,19 +26,20 @@ const CompletedServicesCard = ({ task, onSelect }) => {
 };
 
 const CompletedServicesDetails = ({ selectedTask }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
+  const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
 
   const handleViewServiceRecord = () => {
-    // Implement logic for viewing service record
-    console.log('Viewing service record...');
+    setIsRecordModalOpen(true);
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const openInvoiceModal = () => {
+    setIsInvoiceModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeModals = () => {
+    setIsInvoiceModalOpen(false);
+    setIsRecordModalOpen(false);
   };
 
   return (
@@ -49,12 +51,18 @@ const CompletedServicesDetails = ({ selectedTask }) => {
           <p>{selectedTask.description}</p>
           <div>
             <button onClick={handleViewServiceRecord}>View Service Record</button>
-            <button onClick={openModal}>Update Invoice</button>
+            <button onClick={openInvoiceModal}>Update Invoice</button>
           </div>
-          {isModalOpen && (
+          {isInvoiceModalOpen && (
             <InvoiceModal
               data={selectedTask} // Pass the necessary data here
-              onClose={closeModal}
+              onClose={closeModals}
+            />
+          )}
+          {isRecordModalOpen && (
+            <RecordModal
+              data={selectedTask} // Pass the necessary data here
+              onClose={closeModals}
             />
           )}
         </>
