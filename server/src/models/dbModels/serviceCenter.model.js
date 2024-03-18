@@ -20,6 +20,8 @@ const mongoose = require("mongoose");
         open_hours: String,
         ratings: String,
         url : String,
+        review_total : String,
+        review_count : String,
         services: [ServiceSchema]
         },
         { 

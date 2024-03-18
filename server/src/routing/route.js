@@ -3,6 +3,7 @@ const router = require('express').Router();
 let customer = require('./routes/customer.routes')
 let serviceCenter = require('./routes/serviceCenter.routes')
 let serviceRecord = require('./routes/serviceRecord.routes')
+let invoice = require('./routes/invoice.routes.js')
 let booking = require('./routes/booking.routes')
 let upload = require('./routes/upload.routes')
 
@@ -11,6 +12,7 @@ let upload = require('./routes/upload.routes')
 router.use('/customer', customer);
 router.use('/serviceCenter', serviceCenter);
 router.use('/serviceRecord', serviceRecord);
+router.use('/invoice', invoice);
 router.use('/booking', booking);
 router.use('/upload', upload);
 

@@ -60,7 +60,7 @@ module.exports = { registerServiceCenter , findAllServiceCenters , findServiceCe
     }
 
 
-    //Find Service Center by name 
+    //Find Service Center by email 
     async function findServiceCenterByEmail ( req, res ) {
         try {
             const result = await FileService.findServiceCenterByEmail( req.body);

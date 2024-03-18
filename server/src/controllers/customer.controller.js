@@ -65,7 +65,7 @@ module.exports = { registerCustomer , findCustomer , updateCustomer, updateCusto
     //Updating Customer Picture
     async function updateCustomerPicture ( req, res ) {
         try {
-            const result = await FileService.updateCustomerPicture( req.body);
+            const result = await FileService.updateCustomerPicture( req.file , req.body.email);
             return res.send( result );
         } catch ( err ) {
             console.log( err ); 

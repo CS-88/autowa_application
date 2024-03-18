@@ -102,7 +102,7 @@ class FileService {
             const validPassword = await bcrypt.compare(body.old_password, user.password)
             if (!validPassword) return { Status: 400, Error: "Please Enter the Valid Old Password" }
 
-            //   //Hashing the Password
+            //Hashing the Password
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(body.new_password, salt)
 
@@ -115,41 +115,40 @@ class FileService {
         } 
         catch ( err ) {
             console.log( err)
-            return { Status: 500, Error : `${err.name} : ${err.message} `, Location: "./src/services/employee.service.js - updateCustomerPassword(body)" };
+            return { Status: 500, Error : `${err.name} : ${err.message} `, Location: "./src/services/customer.service.js - updateCustomerPassword(body)" };
         }
     }
 
 
     //Update Customer Picture
-    async updateCustomerPicture( body ) {
+    async updateCustomerPicture( body , email ) {
         try {
-            console.log(body)
-            let imageExist = await this.findCustomer({ email: body.email });
-            //console.log(imageExist)
+            let imageExist = await this.findCustomer({ email: email });
 
             await aws.deletefile(imageExist.url);
+
+            let aws_url = await aws.uploadfile(body.path)
     
-            let aws_url = await aws.uploadfile(body.url)
     
-    
-            fs.unlink(body.url, (err) => {
+            fs.unlink(body.path, (err) => {
               if (err) {
                 throw err;
               }
-    
-              console.log("Deleted File successfully.");
             });
     
     
             imageExist.url = aws_url.Location;
             
-            let process =  await this.MongooseServiceInstance.updateOne({ email: body.email }, imageExist);
+            let process =  await this.MongooseServiceInstance.updateOne({ email: imageExist.email }, imageExist);
 
-            return { url : imageExist.url};
+            if(process.modifiedCount == 1){
+                return { url : imageExist.url};
+            }
+            return { message : "Image upload failed"}
         } 
         catch ( err ) {
             console.log( err)
-            return { Status: 500, Error : `${err.name} : ${err.message} `, Location: "./src/services/employee.service.js - updateCustomerPicture(body)" };
+            return { Status: 500, Error : `${err.name} : ${err.message} `, Location: "./src/services/customer.service.js - updateCustomerPicture(body)" };
         }
     }
 
@@ -162,8 +161,6 @@ class FileService {
                 let { error } = await registerCustomerValidation(body);
                 if (error) return { Status: "400", Error: error.details[0].message }
             }
-
-            console.log(body.email)
 
             //Updating document and returning result
             let result = await this.MongooseServiceInstance.updateOne({ email: body.email }, body);
