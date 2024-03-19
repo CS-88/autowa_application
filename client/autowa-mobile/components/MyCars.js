@@ -62,12 +62,12 @@ export default function MyCars() {
         <TouchableOpacity
           onPress={() => handleButtonPress('ServiceRecords')}
           style={styles.buttons}>
-          <Text style={{ color: 'white', fontSize: 18 }}>Service Record</Text>
+          <Text style={{ color: 'white', fontSize: 18 }}>Service Records</Text>
         </TouchableOpacity>
       </View>
       <View style={{ alignItems: 'center', paddingTop: 30 }}>
         <TouchableOpacity style={styles.buttons}>
-          <Text style={{ color: 'white', fontSize: 18 }}>Recent Bookings</Text>
+          <Text style={{ color: 'white', fontSize: 18 }}>Update Vehicle Info</Text>
         </TouchableOpacity>
       </View>
     </>
