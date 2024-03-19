@@ -2,7 +2,7 @@ const MongooseService = require('../utils/functions'); // Data Access Layer
 const FileModel = require("../models/dbModels/serviceCenter.model"); // Database Model
 const aws = require('../middleware/aws-bucket');  
 const fs = require('fs');
-
+const bcrypt = require('bcryptjs');
 
 class FileService {
 
@@ -18,6 +18,11 @@ class FileService {
             //Check if email already exists
             let emailExist = await this.findEmailExist(body.email);
             if (emailExist) return { Status: "400", Email: emailExist.email, Error: "Email Already Exists!" }
+
+            //Hashing the Password
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(body.password, salt)
+            body.password = hashedPassword;
 
             //Creating the Service Center
             let result = await this.MongooseServiceInstance.create(body)
