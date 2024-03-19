@@ -24,6 +24,7 @@ const mongoose = require("mongoose");
             review_count : String,
             booking_date : String,
             booking_count : String,
+            password : String,
             services: [ServiceSchema]
         },
         { 
