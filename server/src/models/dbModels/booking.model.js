@@ -1,12 +1,5 @@
 const mongoose = require("mongoose");
 
-    const ServiceSchema = new mongoose.Schema(
-        {
-            service_name: String,
-            service_price: String,
-        }
-    );
-
 
     const BookingSchema = new mongoose.Schema(
         {
@@ -25,7 +18,22 @@ const mongoose = require("mongoose");
             customer_special_notes : String,
             review_number: String,
             review_message: String,
-            services: [ServiceSchema]
+            car_wash : {
+                status : Boolean,
+                fee : String
+            },
+            wash_and_vacuum: {
+                status: Boolean,
+                fee: String
+            },
+            wash_and_interior_clean_up: {
+                status: Boolean,
+                fee: String
+            },
+            full_service: {
+                status: Boolean,
+                fee: String
+            }
         },
         { 
             timestamps: true 
