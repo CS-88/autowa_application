@@ -56,11 +56,8 @@ export default function Dashboard() {
             </View>
           </View>
           <View>
-            <Text style={{ marginVertical: 11, fontSize: 16, paddingLeft: 15 }}>
+            <Text style={{ marginVertical: 25, fontSize: 16, paddingLeft: 15 }}>
               Hi Sultan
-            </Text>
-            <Text style={{ paddingTop: 2, fontSize: 16, paddingLeft: 15 }}>
-              Service Center Name
             </Text>
           </View>
           <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: 2 }}>
