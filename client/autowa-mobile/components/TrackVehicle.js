@@ -17,7 +17,7 @@ export default function TrackVehicle() {
       <View style={{ alignItems: 'center', paddingTop: 50 }}>
         <Image
           style={{ height: 162, width: 162 }}
-          source={require('../Images/Car_wash.png')}
+          source={require('../assets/Car_wash.png')}
         />
       </View>
       <View
