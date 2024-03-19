@@ -20,6 +20,7 @@ const mongoose = require("mongoose");
             service_center_note : String,
             service_center_email: String,
             customer_name: String,
+            customer_email: String,
             customer_vehicle_number: String,
             customer_special_notes : String,
             review_number: String,

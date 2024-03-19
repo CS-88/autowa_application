@@ -66,7 +66,7 @@ class MongooseService {
     deleteMany( query ) {
       return this.model
         .deleteMany( query )
-        .select({ __v: 0 }); //CHECK WHAT THIS IS *******************************#####################**********************************************************************************************
+        .select({ __v: 0 });
     }
 
 
@@ -80,7 +80,7 @@ class MongooseService {
     findDistinct ( query, field ) {
       return this.model
         .find( query )
-        .distinct( field ); //CHECK WHAT THIS IS *******************************#####################**********************************************************************************************
+        .distinct( field );
     }
 
  
@@ -93,7 +93,7 @@ class MongooseService {
     findOne ( query ) {
       
       return this.model
-        .findOne( query , {createdAt:0,_id:0, updatedAt:0, __v:0} ); //CHECK WHAT THIS IS *******************************#####################**********************************************************************************************
+        .findOne( query , {createdAt:0,_id:0, updatedAt:0, __v:0} );
     }
 
 
@@ -107,7 +107,7 @@ class MongooseService {
     findOneMerchant ( query ) {
       
       return this.model
-        .findOne( query , {createdAt:0,_id:0, updatedAt:0, __v:0} ); //CHECK WHAT THIS IS *******************************#####################**********************************************************************************************
+        .findOne( query , {createdAt:0,_id:0, updatedAt:0, __v:0} ); 
     }
 
 
@@ -122,7 +122,7 @@ class MongooseService {
      */
     findById ( id, projection = { __v: 0 }) {
       return this.model
-        .findById( id, projection ); //CHECK WHAT THIS IS *******************************#####################**********************************************************************************************
+        .findById( id, projection ); 
     }
   
 
@@ -135,7 +135,7 @@ class MongooseService {
       return this.model
         .findOne({})
         .limit(1)
-        .sort({$natural:-1}) //CHECK WHAT THIS IS *******************************#####################**********************************************************************************************
+        .sort({$natural:-1}) 
     }
 
 
@@ -147,8 +147,8 @@ class MongooseService {
      */
     find( query, sort ,projection = { __v: 0 }) {
       return this.model
-        .find( query , projection ) //CHECK WHAT THIS IS *******************************#####################**********************************************************************************************
-        .sort(sort);  //CHECK WHAT THIS IS *******************************#####################**********************************************************************************************
+        .find( query , projection )
+        .sort(sort); 
     }
 
 
@@ -162,7 +162,7 @@ class MongooseService {
      */
     update ( id, body, options = { lean: true, new: true } ) {
       return this.model
-        .findByIdAndUpdate( id, body, options ); //CHECK WHAT THIS IS *******************************#####################**********************************************************************************************
+        .findByIdAndUpdate( id, body, options );
     }
 
 
@@ -175,7 +175,7 @@ class MongooseService {
      */
     updateOne ( query, body ) {
       return this.model
-        .updateOne( query, body ); //CHECK WHAT THIS IS *******************************#####################**********************************************************************************************
+        .updateOne( query, body );
     }
 
 
@@ -189,7 +189,7 @@ class MongooseService {
      */
     updateMany ( condition, update, options = { lean: true, new: true } ) {
       return this.model
-        .updateMany( condition, update, options ); //CHECK WHAT THIS IS *******************************#####################**********************************************************************************************
+        .updateMany( condition, update, options );
     }
 
 

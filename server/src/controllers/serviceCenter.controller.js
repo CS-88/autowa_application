@@ -1,7 +1,7 @@
 const file = require( "../services/serviceCenter.service" );
 const FileService = new file();
 
-module.exports = { registerServiceCenter , findAllServiceCenters , findServiceCenter , updateServiceCenter , deleteServiceCenter , updateServiceCenterPicture , findServiceCentersByLocation , findServiceCenterByEmail };
+module.exports = { registerServiceCenter , findAllServiceCenters , findServiceCenter , findServiceCentersByRating , updateServiceCenter , updateBookingCount , deleteServiceCenter , updateServiceCenterPicture , findServiceCentersByLocation , findServiceCenterByEmail };
 
     //Create new Service Center through registration
     async function registerServiceCenter ( req, res ) {
@@ -84,13 +84,38 @@ module.exports = { registerServiceCenter , findAllServiceCenters , findServiceCe
     }
 
 
-    //Updating Service Center Picture
-    async function updateServiceCenterPicture ( req, res ) {
+    //Find Service Center by raiting 
+    async function findServiceCentersByRating ( req, res ) {
         try {
-            const result = await FileService.updateServiceCenterPicture( req.body);
+            const result = await FileService.findServiceCentersByRating( req.body);
             return res.send( result );
         } catch ( err ) {
             console.log( err ); 
             res.status( 500 ).send( { Status: 500 , Success: false, Error : `${err.name} : ${err.message}`  } );
         }
     }
+
+
+    //Updating Service Center Picture
+    async function updateServiceCenterPicture ( req, res ) {
+        try {
+            const result = await FileService.updateServiceCenterPicture( req.file , req.body.email);
+            return res.send( result );
+        } catch ( err ) {
+            console.log( err ); 
+            res.status( 500 ).send( { Status: 500 , Success: false, Error : `${err.name} : ${err.message}`  } );
+        }
+    }
+
+     //Updating Service Center Booking Count
+     async function updateBookingCount ( req, res ) {
+        try {
+            const result = await FileService.updateBookingCount(req.body);
+            return res.send( result );
+        } catch ( err ) {
+            console.log( err ); 
+            res.status( 500 ).send( { Status: 500 , Success: false, Error : `${err.name} : ${err.message}`  } );
+        }
+    }
+
+    

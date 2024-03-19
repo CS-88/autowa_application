@@ -6,7 +6,7 @@ class Database {
     this._connect()
   }
   
-// Connecting to MongoDB with _connect and this function will be called from constructor. 
+// Connecting to MongoDB with _connect and this function will be called from constructor in server.js 
   
 async _connect() {
     try{

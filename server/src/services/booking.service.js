@@ -93,7 +93,7 @@ class FileService {
     }
 
 
-    //Find All bookings of a specific Service Centers with booking name
+    //Find All bookings of a specific Service Centers with number plate
     async getBookingByNumberPlate(body) {
         try {
             let result = await this.MongooseServiceInstance.find( { service_center_email : body.service_center_email, customer_vehicle_number : body.customer_vehicle_number })
