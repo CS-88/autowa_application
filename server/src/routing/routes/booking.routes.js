@@ -1,7 +1,7 @@
 const router = require("express").Router();
 let booking = require("../../controllers/booking.controller")
 
-//Routes related to service Centers
+//Routes related to booking 
 router.post("/create", booking.createBooking);
 router.post("/get", booking.getBooking);
 router.post("/get/status", booking.getBookingByStatus);
