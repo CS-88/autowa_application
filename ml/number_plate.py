@@ -9,6 +9,8 @@ cap.set(4, 480) #height
 
 min_area = 500;
 
+# count = 0
+
 while True:
     success, img = cap.read()
 
@@ -24,7 +26,18 @@ while True:
             cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
             cv2.putText(img, "Number Plate", (x, y - 5), cv2.FONT_HERSHEY_COMPLEX_SMALL, 1, (255, 0, 255), 2)
 
+            img_roi = img[y: y + h, x: x + w]
+            cv2.imshow("ROI", img_roi)
+
     cv2.imshow("Result", img)
+
+    # if cv2.waitKey(1) & 0xFF == ord('s'):
+    #     cv2.imwrite("plates/plate_img/scanned_img_" + str(count) + ".jpg", img_roi)
+    #     cv2.rectangle(img, (0, 200), (640, 300), (0, 255, 0), cv2.FILLED)
+    #     cv2.putText(img, "Plate Saved", (150, 265), cv2.FONT_HERSHEY_COMPLEX_SMALL, 2, (0, 0, 255), 2)
+    #     cv2.imshow("Results", img)
+    #     cv2.waitKey(500)
+    #     count += 1
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
