@@ -4,7 +4,7 @@ let customer = require("../../controllers/customer.controller")
 
 //Routes related customer
 router.post("/register", customer.registerCustomer);
-router.post("/get/customer", customer.findCustomer);
+router.post("/get", customer.findCustomer);
 router.put("/update", customer.updateCustomer);
 router.put("/update/password", customer.updateCustomerPassword);
 router.post("/update/pic", multer.upload ,customer.updateCustomerPicture);

@@ -163,6 +163,7 @@ class FileService {
                 let findCenter = await this.MongooseServiceInstance.findOne({email : body.email})
                 let result;
 
+                console.log(body.booking_date)
                 if(findCenter.length != 0){
                     if(findCenter.booking_date != body.booking_date){
                         findCenter.booking_date = body.booking_date;

@@ -5,7 +5,7 @@ let serviceCenter = require('./routes/serviceCenter.routes')
 let serviceRecord = require('./routes/serviceRecord.routes')
 let invoice = require('./routes/invoice.routes.js')
 let booking = require('./routes/booking.routes')
-let upload = require('./routes/upload.routes')
+let auth = require('./routes/login.routes.js')
 
 //All the Routes that are available in the application are divided into related route files and are called below.
 
@@ -14,6 +14,6 @@ router.use('/serviceCenter', serviceCenter);
 router.use('/serviceRecord', serviceRecord);
 router.use('/invoice', invoice);
 router.use('/booking', booking);
-router.use('/upload', upload);
+router.use('/auth', auth);
 
 module.exports = router;

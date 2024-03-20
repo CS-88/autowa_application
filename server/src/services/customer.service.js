@@ -63,6 +63,12 @@ class FileService {
     //Deleting Customer
     async deleteCustomer(body) {
         try {
+
+            let recordExist = await this.MongooseServiceInstance.findOne({ email: body.email });
+
+            await aws.deletefile(recordExist.url);
+            
+
             let result = await this.MongooseServiceInstance.deleteOne({ email: body.email });
             if(result.deletedCount === 1){
                 return { message : "success" }
@@ -164,7 +170,6 @@ class FileService {
 
             //Updating document and returning result
             let result = await this.MongooseServiceInstance.updateOne({ email: body.email }, body);
-            console.log(result)
             if(result.modifiedCount === 1){
                 return { message : "success" }
             }

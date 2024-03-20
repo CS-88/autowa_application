@@ -19,7 +19,7 @@ class LoginService {
             if (error) return { Status: "400", Error: error.details[0].message }
 
             //Check if email exists
-            model = FileModelServiceCenter.ServiceCenter;
+            let model = FileModelServiceCenter.ServiceCenter;
             this.MongooseServiceInstance = new MongooseService(model);
 
             let User = await this.MongooseServiceInstance.findOne({ email: body.email });
@@ -50,7 +50,7 @@ class LoginService {
             if (error) return { Status: "400", Error: error.details[0].message }
 
             //Check if email exists
-            model = FileModelCustomer.Customer;
+            let model = FileModelCustomer.Customer;
             this.MongooseServiceInstance = new MongooseService(model);
 
             let User = await this.MongooseServiceInstance.findOne({ email: body.email });

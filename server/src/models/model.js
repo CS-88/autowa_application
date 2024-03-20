@@ -16,8 +16,8 @@ async _connect() {
         useNewUrlParser: true,
         useUnifiedTopology: true
       });
-      console.log('Database connection successful!')
-      console.log(`Open on ${config.url+config.port}`)
+      await console.log('Database connection successful!')
+      await console.log(`Open on ${config.url+config.port}`)
     }
     catch(err) {
       console.error('Database connection error : \n---------------------------------------------- \n' + err)
