@@ -1,21 +1,21 @@
 //MockObjects Used for the Service Center Testing
 
 const mockObject = {
-    name : "test serice center",
-    email : "testservicecenter@gmail.com",
-    mobile_no : "0112821176",
-    description : "description of test service center",
-    about_us : "about us of test service center",
-    location : "testLocation",
-    open_days : "Monday - Friday",
-    open_hours : "8.00 Am - 9.00 Pm",
-    rating : "5",
-    url : "none",
-    review_total : "15",
-    review_count : "3",
-    booking_date : "3/19/2024",
-    booking_count : "0",
-    password : "testcenter123",
+    id: "00-00000",
+    date: "20/03/2024",
+    start_time: "8.00 AM",
+    end_time: "8.00 PM",
+    status: "pending",
+    booking_name: "String",
+    decline_note: "note",
+    service_center_note: "note",
+    service_center_email: "testservicecenter@gmail.com",
+    customer_name: "test user",
+    customer_email: "testuser@gmail.com",
+    customer_vehicle_number: "CAX-1234",
+    customer_special_notes: "note",
+    review_number: "",
+    review_message: "",
     car_wash: {
         status: true,
         fee: "4000"
@@ -34,42 +34,29 @@ const mockObject = {
     }
 }
 
-const mockLoginObject = {
-    email : "testservicecenter@gmail.com",
-    password : "testcenter123"
-}
-
-
-const mockFalseLoginObject = {
-    email : "testservicecenter@gmail.com",
-    password : "testcenter123333"
-}
-
-
 const findObject = {
-    name : "test serice center",
-    email : "testservicecenter@gmail.com",
-    location : "testLocation",
-    rating : "5"
+    booking_name : "test user CAX-1234",
+    service_center_email : "testservicecenter@gmail.com",
+    customer_vehicle_number : "CAX-1234",
 }
 
 
 const updateObject = {
-    name : "test serice center",
-    email : "testservicecenter@gmail.com",
-    mobile_no : "0112821176",
-    description : "description of test service center",
-    about_us : "about us of test service center",
-    location : "testLocation",
-    open_days : "Monday - Friday",
-    open_hours : "8.00 Am - 8.00 Pm",
-    rating : "5",
-    url : "none",
-    review_total : "15",
-    review_count : "3",
-    booking_date : "3/19/2024",
-    booking_count : "0",
-    password : "testcenter123",
+    id: "00-00000",
+    date: "20/03/2024",
+    start_time: "8.00 AM",
+    end_time: "8.00 PM",
+    status: "accepted",
+    booking_name: "String",
+    decline_note: "note",
+    service_center_note: "note",
+    service_center_email: "testservicecenter@gmail.com",
+    customer_name: "test user",
+    customer_email: "testuser@gmail.com",
+    customer_vehicle_number: "CAX-1234",
+    customer_special_notes: "note",
+    review_number: "",
+    review_message: "",
     car_wash: {
         status: true,
         fee: "4000"
@@ -88,4 +75,4 @@ const updateObject = {
     }
 }
 
-module.exports = { mockLoginObject , mockFalseLoginObject, mockObject , findObject , updateObject }
+module.exports = { mockObject , findObject , updateObject }

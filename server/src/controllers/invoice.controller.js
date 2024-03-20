@@ -1,7 +1,7 @@
 const file = require( "../services/invoice.service" );
 const FileService = new file();
 
-module.exports = { createInvoice , getUserInvoices , getServiceCenterInvoices};
+module.exports = { createInvoice, getUserInvoices, getServiceCenterInvoices, deleteInvoice };
 
     //Create new Invoice
     async function createInvoice ( req, res ) {
@@ -37,5 +37,17 @@ module.exports = { createInvoice , getUserInvoices , getServiceCenterInvoices};
         } catch ( err ) {
             console.log( err ); 
             res.status( 500 ).send( { Status: 500 , Success: false, Error : `${err.name} : ${err.message}`  } );
+        }
+    }
+
+
+    //Delete invoice records of specific service center 
+    async function deleteInvoice(req, res) {
+        try {
+            const result = await FileService.deleteInvoice(req.body);
+            return res.send(result);
+        } catch (err) {
+            console.log(err);
+            res.status(500).send({ Status: 500, Success: false, Error: `${err.name} : ${err.message}` });
         }
     }

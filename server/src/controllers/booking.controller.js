@@ -1,7 +1,7 @@
 const file = require( "../services/booking.service" );
 const FileService = new file();
 
-module.exports = { createBooking , getBooking , getBookingByStatus , getBookingByBookingName , getBookingByNumberPlate, setBookingStatus };
+module.exports = { createBooking , getBooking , getBookingByStatus , getBookingByBookingName , getBookingByNumberPlate, setBookingStatus, deleteBooking };
 
     //Create new booking
     async function createBooking ( req, res ) {
@@ -69,5 +69,16 @@ module.exports = { createBooking , getBooking , getBookingByStatus , getBookingB
         } catch ( err ) {
             console.log( err ); 
             res.status( 500 ).send( { Status: 500 , Success: false, Error : `${err.name} : ${err.message}`  } );
+        }
+    }
+
+    //delete booking with id
+    async function deleteBooking(req, res) {
+        try {
+            const result = await FileService.deleteBooking(req.body);
+            return res.send(result);
+        } catch (err) {
+            console.log(err);
+            res.status(500).send({ Status: 500, Success: false, Error: `${err.name} : ${err.message}` });
         }
     }

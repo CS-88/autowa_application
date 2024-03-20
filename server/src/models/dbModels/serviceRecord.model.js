@@ -38,7 +38,7 @@ const mongoose = require("mongoose");
             cooling_and_fuel_system: {
                 radiator_coolant: Boolean,
                 ac_fan: Boolean,
-                air_filter: Boolean,
+                air_filter: Boolean
             }
         },
         { 

@@ -56,8 +56,20 @@ class FileService {
     }
 
 
-
-    
+    //Find Service Records of a user
+    async deleteInvoice(body) {
+        try {
+            let result = await this.MongooseServiceInstance.deleteOne({ service_center_email: body.service_center_email })
+            if (result.deletedCount === 1) {
+                return { message: "success" }
+            }
+            return result;
+        }
+        catch (err) {
+            console.log(err)
+            return { Status: 500, Error: `${err.name} : ${err.message} `, Location: "./src/services/serviceRecord.service.js - deleteRecord(body)" };
+        }
+    }
 }
 
 module.exports = FileService;

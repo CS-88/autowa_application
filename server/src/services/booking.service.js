@@ -14,7 +14,9 @@ class FileService {
     async createBooking(body) {
         try {
 
-            body.id = await this.getNewId();
+            if(body.id != "00-00000" && body.id !=null && body.id != undefined){
+                body.id = await this.getNewId();
+            }
             body.booking_name = body.customer_name + " " + body.customer_vehicle_number
             //Creating the Booking
             let result = await this.MongooseServiceInstance.create(body)
@@ -101,7 +103,7 @@ class FileService {
         }
         catch (err) {
             console.log(err)
-            return { Status: 500, Error: `${err.name} : ${err.message} `, Location: "./src/services/booking.service.js - getBookingByBookingName()" };
+            return { Status: 500, Error: `${err.name} : ${err.message} `, Location: "./src/services/booking.service.js - getBookingByNumberPlate()" };
         }
     }
 
@@ -109,14 +111,28 @@ class FileService {
     //Set booking status with ID
     async setBookingStatus(body) {
         try {
-            let bookingExist = await this.MongooseServiceInstance.find( { id : body.id })
+            let bookingExist = await this.MongooseServiceInstance.findOne( { id : body.id })
             bookingExist.status = body.status;
-            let result = await this.MongooseServiceInstance.updateOne({ id : body.id, bookingExist});
+            let result = await this.MongooseServiceInstance.updateOne({ id: body.id }, bookingExist);
             return result;
         }
         catch (err) {
             console.log(err)
-            return { Status: 500, Error: `${err.name} : ${err.message} `, Location: "./src/services/booking.service.js - getBookingByBookingName()" };
+            return { Status: 500, Error: `${err.name} : ${err.message} `, Location: "./src/services/booking.service.js - setBookingStatus()" };
+        }
+    }
+
+
+
+    //delete booking with ID
+    async deleteBooking(body) {
+        try {
+            let result = await this.MongooseServiceInstance.deleteOne({ id: body.id });
+            return result;
+        }
+        catch (err) {
+            console.log(err)
+            return { Status: 500, Error: `${err.name} : ${err.message} `, Location: "./src/services/booking.service.js - deleteBooking()" };
         }
     }
     

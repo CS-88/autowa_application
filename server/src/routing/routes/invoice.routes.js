@@ -5,5 +5,6 @@ let invoice = require("../../controllers/invoice.controller")
 router.post("/create", invoice.createInvoice);
 router.post("/get/user", invoice.getUserInvoices);
 router.post("/get/serviceCenter", invoice.getServiceCenterInvoices);
+router.delete("/delete", invoice.deleteInvoice);
 
 module.exports = router;

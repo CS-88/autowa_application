@@ -1,7 +1,7 @@
 const file = require( "../services/serviceRecord.service" );
 const FileService = new file();
 
-module.exports = { createServiceRecord , getServiceCenterRecords , getUserRecords};
+module.exports = { createServiceRecord , getServiceCenterRecords , getUserRecords, deleteRecord};
 
     //Create new Service Record
     async function createServiceRecord ( req, res ) {
@@ -35,5 +35,17 @@ module.exports = { createServiceRecord , getServiceCenterRecords , getUserRecord
         } catch ( err ) {
             console.log( err ); 
             res.status( 500 ).send( { Status: 500 , Success: false, Error : `${err.name} : ${err.message}`  } );
+        }
+    }
+
+
+    //Find Service records of user 
+    async function deleteRecord(req, res) {
+        try {
+            const result = await FileService.deleteRecord(req.body);
+            return res.send(result);
+        } catch (err) {
+            console.log(err);
+            res.status(500).send({ Status: 500, Success: false, Error: `${err.name} : ${err.message}` });
         }
     }

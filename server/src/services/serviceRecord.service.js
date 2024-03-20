@@ -46,12 +46,29 @@ class FileService {
     //Find Service Records of a user
     async getUserRecords(body) {
         try {
-            let result = await this.MongooseServiceInstance.find({ email : body.email })
+            let result = await this.MongooseServiceInstance.find({ customer_email: body.customer_email })
             return result;
         }
         catch (err) {
             console.log(err)
             return { Status: 500, Error: `${err.name} : ${err.message} `, Location: "./src/services/serviceRecord.service.js - getUserRecords(body)" };
+        }
+    }
+
+
+
+    //Find Service Records of a user
+    async deleteRecord(body) {
+        try {
+            let result = await this.MongooseServiceInstance.deleteOne({ service_center_email: body.service_center_email })
+            if (result.deletedCount === 1) {
+                return { message: "success" }
+            }
+            return result;
+        }
+        catch (err) {
+            console.log(err)
+            return { Status: 500, Error: `${err.name} : ${err.message} `, Location: "./src/services/serviceRecord.service.js - deleteRecord(body)" };
         }
     }
 
