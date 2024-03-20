@@ -1,0 +1,8 @@
+#dataset root directory
+# path: ../data
+path: C:\Users\dhanu\Development\autowa_application\ml\yolo\custom_object_detection\data
+train: images/train
+val: images/train
+
+names:
+  0: car
