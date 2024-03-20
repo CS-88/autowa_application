@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -7,58 +7,67 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import "./Table.css";
-import DetailsModal from "./DetailsModal"; // Import the DetailsModal component
-
-function createData(name, trackingId, date, status) {
-  return { name, trackingId, date, status };
-}
-
-const rows = [
-  createData("Dhanuka CAL-7027", 18908424, "2 March 2022", "Approved"),
-  createData("Nishad CAI-1548 ", 18908424, "2 March 2022", "Pending"),
-  createData("Sulthan CAT-7845", 18908424, "2 March 2022", "Approved"),
-  createData("Yusri KY-8462", 18908421, "2 March 2022", "Delivered"),
-];
-
-const makeStyle = (status) => {
-  if (status === "Approved") {
-    return {
-      background: "rgb(145 254 159 / 47%)",
-      color: "green",
-    };
-  } else if (status === "Pending") {
-    return {
-      background: "#ffadad8f",
-      color: "red",
-    };
-  } else {
-    return {
-      background: "#59bfff",
-      color: "white",
-    };
-  }
-};
+import DetailsModal from "./DetailsModal";
 
 export default function BasicTable() {
-  const [tableData, setTableData] = useState(rows);
+  const [tableData, setTableData] = useState([]);
   const [selectedRowData, setSelectedRowData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [additionalDetails, setAdditionalDetails] = useState(null);
 
-  const handleUpdateStatus = (rowData, newStatus) => {
-    const updatedData = tableData.map((row) =>
-      row === rowData ? { ...row, status: newStatus } : row
-    );
-    setTableData(updatedData);
-  };
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const response = await fetch("http://localhost:5500/api/booking/get", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ "service_center_email": "automirage@gmail.com" })
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();
+        // Set only the last 4 records
+        setTableData(data.slice(-4));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    fetchBookings();
+  }, []);
 
-  const handleDetailsClick = (row) => {
-    setSelectedRowData(row);
-    setIsModalOpen(true);
-  };
+  const fetchAdditionalDetails = async (id) => {
+    try {
+        const response = await fetch("http://localhost:5500/api/booking/details/get", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ id })
+        });
+        if (!response.ok) {
+            throw new Error("Failed to fetch additional details");
+        }
+        const data = await response.json();
+        setAdditionalDetails(data);
+    } catch (error) {
+        console.error("Error fetching additional details:", error);
+    }
+};
+
+const handleDetailsClick = (row) => {
+  setSelectedRowData(row);
+  setIsModalOpen(true);
+  fetchAdditionalDetails(row.id); // Fetch additional details including updated status
+};
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedRowData(null);
+    setAdditionalDetails(null);
   };
 
   return (
@@ -71,8 +80,8 @@ export default function BasicTable() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell>Bookings</TableCell>
-              <TableCell align="left">Tracking ID</TableCell>
+              <TableCell>Booking Name</TableCell>
+              <TableCell align="left">ID</TableCell>
               <TableCell align="left">Date</TableCell>
               <TableCell align="left">Status</TableCell>
               <TableCell align="left"></TableCell>
@@ -81,21 +90,22 @@ export default function BasicTable() {
           <TableBody style={{ color: "white" }}>
             {tableData.map((row) => (
               <TableRow
-                key={row.name}
+                key={row._id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  {row.name}
+                  {row.booking_name}
                 </TableCell>
-                <TableCell align="left">{row.trackingId}</TableCell>
+                <TableCell align="left">{row.id}</TableCell>
                 <TableCell align="left">{row.date}</TableCell>
                 <TableCell align="left">
-                  <span className="status" style={makeStyle(row.status)}>
-                    {row.status}
-                  </span>
+                <div className={`status-box ${row.status === 'Pending' ? 'yellow' : row.status === 'Completed' ? 'blue' : row.status === 'Approved' ? 'green' : row.status === 'Declined' ? 'red' : ''}`}>
+                {row.status}
+                </div>
                 </TableCell>
+
                 <TableCell align="left" className="Details">
-                  <button onClick={() => handleDetailsClick(row)}>Details</button>
+                  <button className="detailbutton" onClick={() => handleDetailsClick(row)}>Details</button>
                 </TableCell>
               </TableRow>
             ))}
@@ -107,8 +117,8 @@ export default function BasicTable() {
         <div className="popup-background">
           <DetailsModal
             rowData={selectedRowData}
+            additionalDetails={additionalDetails}
             onClose={handleCloseModal}
-            onUpdateStatus={handleUpdateStatus}
           />
         </div>
       )}

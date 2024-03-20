@@ -1,40 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Card.css";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import { motion, AnimateSharedLayout } from "framer-motion";
+import { motion } from "framer-motion";
 import { UilTimes } from "@iconscout/react-unicons";
 import Chart from "react-apexcharts";
 
-const Card = ({ png, color, barValue, title, value, series }) => {
-  const [expanded, setExpanded] = useState(false);
+const CompactCard = ({ png: Png, color, barValue, title, setExpanded }) => {
+  const [bookingCount, setBookingCount] = useState(null);
 
-  return (
-    <AnimateSharedLayout>
-      {expanded ? (
-        <ExpandedCard
-          png={png}
-          color={color}
-          barValue={barValue}
-          title={title}
-          series={series}
-          setExpanded={() => setExpanded(false)}
-        />
-      ) : (
-        <CompactCard
-          png={png}
-          color={color}
-          barValue={barValue}
-          title={title}
-          value={value}
-          setExpanded={() => setExpanded(true)}
-        />
-      )}
-    </AnimateSharedLayout>
-  );
-};
-
-function CompactCard({ png: Png, color, barValue, title, value, setExpanded }) {
+  useEffect(() => {
+    const fetchBookingCount = async () => {
+      try {
+        console.log("Fetching booking count...");
+        const response = await fetch("http://localhost:5500/api/serviceCenter/get/email", {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json"
+           },
+          body: JSON.stringify({
+            "email": "automirage@gmail.com"
+          })
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(`Failed to fetch booking count: ${data.Error}`);
+        }
+        console.log("Booking count data:", data);
+        setBookingCount(data.booking_count);
+      } catch (error) {
+        console.error("Error fetching booking count:", error);
+      }
+    };
+  
+    fetchBookingCount();
+  }, []);
+  
   const radialBarStyle = {
     background: color?.backGround || "#ffffff",
     boxShadow: color?.boxShadow || "0 0 10px rgba(0, 0, 0, 0.1)",
@@ -53,41 +54,14 @@ function CompactCard({ png: Png, color, barValue, title, value, setExpanded }) {
       </div>
       <div className="detail">
         {Png && <Png />}
-        <span>{value}</span>
+        {bookingCount !== null ? (
+          <span>{bookingCount}</span>
+        ) : (
+          <span>Loading...</span>
+        )}
         <span>Last 24 hours</span>
       </div>
     </motion.div>
   );
-}
-
-function ExpandedCard({ png: Png, color, barValue, title, series, setExpanded }) {
-  const expandedCardStyle = {
-    position: "fixed",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    background: color?.backGround || "#ffffff",
-    boxShadow: color?.boxShadow || "0 0 10px rgba(0, 0, 0, 0.1)",
-  };
-
-  const closeButtonStyle = {
-    alignSelf: "flex-end",
-    cursor: "pointer",
-    color: "white",
-  };
-
-  return (
-    <motion.div className="ExpandedCard" style={expandedCardStyle} layoutId="expandableCard">
-      <div style={closeButtonStyle}>
-        <UilTimes onClick={setExpanded} />
-      </div>
-      <span>{title}</span>
-      <div className="chartContainer">
-        <Chart options={{ chart: { type: "area", height: "auto" } }} series={series} type="area" />
-      </div>
-      <span>Last 24 hours</span>
-    </motion.div>
-  );
-}
-
-export default Card;
+};
+export default CompactCard;

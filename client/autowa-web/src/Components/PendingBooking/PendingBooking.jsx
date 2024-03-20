@@ -1,21 +1,22 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import CarImage from '../PendingBooking/car.png';
 import CallIcon from '../PendingBooking/call.png';
 import MessageIcon from '../PendingBooking/message.png';
 import UserIcon from '../PendingBooking/user-icon.png';
 import StarIcon from '../PendingBooking/star-icon.png';
 
-const PendingBookingCard = ({ booking }) => {
+const PendingBookingCard = ({ booking, handleUpdateStatus }) => {
   return (
     <div style={{ border: '1px solid #ccc', padding: '10px', margin: '10px', width: '300px' }}>
       <img src={CarImage} alt="Vehicle" style={{ width: '50px', height: '50px', marginRight: '10px' }} />
       <div>
-        <h3>{booking.ownerName}</h3>
-        <p>{`${booking.carModel} - ${booking.serviceType}`}</p>
+        <h3>{booking.customer_name}</h3>
+        <p>{`${booking.customer_vehicle_number} - ${booking.customer_special_notes}`}</p>
+        <p>{`Date: ${booking.date}, Time: ${booking.start_time} - ${booking.end_time}`}</p>
         <div>
           <img src={MessageIcon} alt="Message" style={{ width: '20px', marginRight: '5px' }} />
           <img src={CallIcon} alt="Telephone" style={{ width: '20px', marginRight: '5px' }} />
-          <button>Accept</button>
+          <button onClick={() => handleUpdateStatus(booking.id, "Approved")}>Accept</button>
         </div>
       </div>
     </div>
@@ -41,28 +42,67 @@ const InstructorCard = ({ instructor }) => {
 };
 
 const PendingBooking = () => {
-  const pendingBookings = [
-    { id: 1, ownerName: 'John Doe', carModel: 'Toyota Camry', serviceType: 'Oil Change' },
-    { id: 2, ownerName: 'John Doe', carModel: 'Toyota Camry', serviceType: 'Oil Change' },
-    { id: 1, ownerName: 'John Doe', carModel: 'Toyota Camry', serviceType: 'Oil Change' },
-    { id: 2, ownerName: 'John Doe', carModel: 'Toyota Camry', serviceType: 'Oil Change' },
-    // Add more pending bookings as needed
-  ];
+  const [pendingBookings, setPendingBookings] = useState([]);
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const response = await fetch("http://localhost:5500/api/booking/get", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ "service_center_email": "automirage@gmail.com" })
+        });
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await response.json();
+        setPendingBookings(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchBookings();
+  }, []);
+
+  const handleUpdateStatus = async (bookingId, newStatus) => {
+    try {
+      const response = await fetch("http://localhost:5500/api/booking/set/status", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: bookingId, status: newStatus }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update status");
+      }
+
+      // Remove the accepted booking from the state
+      setPendingBookings(prevBookings => prevBookings.filter(booking => booking.id !== bookingId));
+    } catch (error) {
+      console.error("Error updating status:", error.message);
+    }
+  };
 
   const instructors = [
-    { id: 1, name: 'Instructor 1', rating: 4.5 },
-    { id: 2, name: 'Instructor 2', rating: 4.5 },
     { id: 1, name: 'Instructor 1', rating: 4.5 },
     { id: 2, name: 'Instructor 2', rating: 4.5 },
     // Add more instructors as needed
   ];
 
+  // Filter out bookings with status "Approved" or "Declined"
+  const filteredPendingBookings = pendingBookings.filter(booking => booking.status !== "Approved" && booking.status !== "Declined" && booking.status !== "Completed");
+
   return (
     <div style={{ display: 'flex' }}>
       <div style={{ flex: 1, overflowY: 'auto', maxHeight: '520px' }}>
         <h2>Pending Bookings</h2>
-        {pendingBookings.map((booking) => (
-          <PendingBookingCard key={booking.id} booking={booking} />
+        {filteredPendingBookings.map((booking) => (
+          <PendingBookingCard key={booking.id} booking={booking} handleUpdateStatus={handleUpdateStatus} />
         ))}
       </div>
       <div style={{ flex: 1, overflowY: 'auto', maxHeight: '520px' }}>

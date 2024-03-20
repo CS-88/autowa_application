@@ -1,59 +1,86 @@
 .MuiTableRow-root > * {
-  padding: 10px;
-}
-
-.MuiTableRow-root.MuiTableRow-head > * {
-  font-weight: bold !important;
-}
-
-.Table td,
-th {
-  border: none !important;
-}
-
-.Table:first-child {
-  border-radius: 0.7rem !important;
-}
-.status {
-  padding: 8px;
-  border-radius: 9px;
-}
-
-.Details {
-  color: #00b5ff !important;
-}
-
-@media screen and (max-width: 1200px) {
-  .Table {
-    width: 170%;
-    margin-top: 2rem;
+    padding: 10px;
   }
-}
-
-
-@media screen and (max-width: 768px) {
-  .Table{
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 23rem;
+  
+  .MuiTableRow-root.MuiTableRow-head > * {
+    font-weight: bold !important;
   }
-}
-.detailbutton {
-  background-color: #c84bf6; /* Green background */
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 14px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.detailbutton:hover {
-  background-color: #7d0b85; /* Darker green on hover */
-}
+  
+  .Table td,
+  th {
+    border: none !important;
+  }
+  
+  .Table:first-child {
+    border-radius: 0.7rem !important;
+  }
+  .status {
+    padding: 8px;
+    border-radius: 9px;
+  }
+  
+  .Details {
+    color: #00b5ff !important;
+  }
+  
+  @media screen and (max-width: 1200px) {
+    .Table {
+      width: 170%;
+      margin-top: 2rem;
+    }
+  }
+  
+  
+  @media screen and (max-width: 768px) {
+    .Table{
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 23rem;
+    }
+  }
+  .detailbutton {
+    background-color: #c84bf6; /* Green background */
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .detailbutton:hover {
+    background-color: #7d0b85; /* Darker green on hover */
+  }
+  
+  
+  
+  .status-box {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+  }
+  
+  .status-box.yellow {
+    background-color: rgba(255, 255, 0, 0.5); /* Yellow with reduced opacity */
+  }
+  
+  .status-box.blue {
+    background-color: rgba(0, 0, 255, 0.5); /* Blue with reduced opacity */
+  }
+  
+  .status-box.green {
+    background-color: rgba(0, 255, 0, 0.5); /* Green with reduced opacity */
+  }
+  
+  .status-box.red {
+    background-color: rgba(255, 0, 0, 0.5); /* Red with reduced opacity */
+  }
+  
