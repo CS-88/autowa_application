@@ -1,7 +1,7 @@
 const file = require( "../services/booking.service" );
 const FileService = new file();
 
-module.exports = { createBooking , getBooking , getBookingByStatus , getBookingByBookingName , getBookingByNumberPlate, setBookingStatus, deleteBooking };
+module.exports = { createBooking , getBooking , getBookingByStatus, getBookingById , getBookingByBookingName , getBookingByNumberPlate, setBookingStatus, deleteBooking };
 
     //Create new booking
     async function createBooking ( req, res ) {
@@ -30,6 +30,18 @@ module.exports = { createBooking , getBooking , getBookingByStatus , getBookingB
     async function getBookingByStatus ( req, res ) {
         try {
             const result = await FileService.getBookingByStatus( req.body);
+            return res.send( result );
+        } catch ( err ) {
+            console.log( err ); 
+            res.status( 500 ).send( { Status: 500 , Success: false, Error : `${err.name} : ${err.message}`  } );
+        }
+    }
+
+
+     //Find All Bookings for particular service center with id
+     async function getBookingById ( req, res ) {
+        try {
+            const result = await FileService.getBookingById( req.body);
             return res.send( result );
         } catch ( err ) {
             console.log( err ); 

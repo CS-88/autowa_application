@@ -82,6 +82,19 @@ class FileService {
     }
 
 
+    //Find All bookings of a specific Service Centers with id
+    async getBookingById(body) {
+        try {
+            let result = await this.MongooseServiceInstance.findOne( { id : body.id})
+            return result;
+        }
+        catch (err) {
+            console.log(err)
+            return { Status: 500, Error: `${err.name} : ${err.message} `, Location: "./src/services/booking.service.js - getBookingByStatus()" };
+        }
+    }
+
+
     //Find All bookings of a specific Service Centers with booking name
     async getBookingByBookingName(body) {
         try {
