@@ -93,11 +93,12 @@ class FileService {
     }
 
 
-    //Find Service Center by name
+    //Find Service Center by name in search
     async findServiceCenter(body) {
         try {
-            let result = await this.MongooseServiceInstance.findOne({ name : body.name })
-            return result;
+            let centers = await this.MongooseServiceInstance.find()
+            if (centers == null || body.name == null) { return { status: 400 } }
+            return centers.filter((centers) => centers.name.toLocaleLowerCase().includes(body.name.toLocaleLowerCase()));
         }
         catch (err) {
             console.log(err)
@@ -140,12 +141,7 @@ class FileService {
             let result = await this.MongooseServiceInstance.find()
 
             if(result.length != 0){
-                for(let i=0; i<result.length;i++){
-                    if(parseFloat(result[i].rating) >= parseFloat(body.rating)){
-                        ratingArray.push(result[i])
-                    }
-                }
-                return ratingArray
+                result.sort((a, b) => b.rating - a.rating);
             }
 
             return result
