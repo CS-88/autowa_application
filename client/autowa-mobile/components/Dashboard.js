@@ -32,6 +32,7 @@ export default function Dashboard() {
 
       let customer_email = await getVerifiedEmail();
       let name = "";
+      let arr = [];
 
       let id = "";
       let booking_name = "";
@@ -104,15 +105,16 @@ export default function Dashboard() {
             }
             //console.log(data)
             if(data.length > 0){
+              arr = data;
               id = data[0].id;
               booking_name = data[0].booking_name;
               customer_special_notes = data[0].customer_special_notes;
               status = data[0].status;
 
-              setId(id);
-              setBookingName(booking_name);
-              setCustomerSpecialNotes(customer_special_notes);
-              setStatus(status);
+              await setId(id);
+              await setBookingName(booking_name);
+              await setCustomerSpecialNotes(customer_special_notes);
+              await setStatus(status);
               return;
             }
             console.log(data)
@@ -153,8 +155,9 @@ export default function Dashboard() {
               alert('Something went wrong, please try again later.');
               return;
             }
+            setShowPopup(!showPopup);
             alert('Order '+ id + ' Cancelled Successfully')
-            showPopup = !showPopup
+            arr = [];
           } else {
             // Handle failed login, maybe display an error message to the user
             alert('Internal Server Error. Please try again Later.');
@@ -184,9 +187,9 @@ export default function Dashboard() {
   };
 
 
-  const togglePopup = () => {
-    fetchBookingNotCompleted();
-    if(id != ""){
+  const togglePopup = async () => {
+    await fetchBookingNotCompleted();
+    if(arr.length > 0){
       setShowPopup(!showPopup);
     }
   };
