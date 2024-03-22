@@ -116,7 +116,7 @@ class FileService {
             let arr = [];
 
             for(let i=0; i<result.length; i++){
-                if(result[i].status != "Completed"){
+                if(result[i].status != "Completed" && result[i].status != "Declined" && result[i].status != "Cancelled"){
                     arr.push(result[i])
                 }
             }

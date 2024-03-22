@@ -16,7 +16,11 @@ export default function Dashboard() {
   const [image, setImage] = useState(null); // Initialize image with null
   let [url, setApiImage] = useState(null); 
   let [name, setName] = useState("");
-  const [showPopup, setShowPopup] = useState(false);
+  let [id, setId] = useState("");
+  let [status, setStatus] = useState("");
+  let [booking_name, setBookingName] = useState("");
+  let [customer_special_notes, setCustomerSpecialNotes] = useState("");
+  let [showPopup, setShowPopup] = useState(false);
 
    useEffect(() => {
     fetchApiImage(); // Call fetchApiImage when the component mounts
@@ -27,13 +31,20 @@ export default function Dashboard() {
       const apiUrl = 'https://autowa-backend.onrender.com/api/customer/get';
 
       let customer_email = await getVerifiedEmail();
-      let name = ""
+      let name = "";
+
+      let id = "";
+      let booking_name = "";
+      let customer_special_notes = "";
+      let status = "";
+
+
       // Prepare the request body
       const requestBody = {
         email: customer_email
       };
 
-      console.log(requestBody.email + " In home");
+      //console.log(requestBody.email + " In home");
 
       // Send POST request to the backend API
       fetch(apiUrl, {
@@ -71,13 +82,10 @@ export default function Dashboard() {
       const apiUrl = 'https://autowa-backend.onrender.com/api/booking/get/not/completed';
 
       let customer_email = await getVerifiedEmail();
-      let name = ""
       // Prepare the request body
       const requestBody = {
-        email: customer_email
+        customer_email: customer_email
       };
-
-      console.log(requestBody.email + " In home");
 
       // Send POST request to the backend API
       fetch(apiUrl, {
@@ -94,10 +102,59 @@ export default function Dashboard() {
               alert('Something went wrong, please try again later.');
               return;
             }
-            url = data.url;
-            name = data.name
-            setApiImage(url);
-            setName(name)
+            //console.log(data)
+            if(data.length > 0){
+              id = data[0].id;
+              booking_name = data[0].booking_name;
+              customer_special_notes = data[0].customer_special_notes;
+              status = data[0].status;
+
+              setId(id);
+              setBookingName(booking_name);
+              setCustomerSpecialNotes(customer_special_notes);
+              setStatus(status);
+              return;
+            }
+            console.log(data)
+          } else {
+            // Handle failed login, maybe display an error message to the user
+            alert('Internal Server Error. Please try again Later.');
+          }
+        })
+        .catch(error => {
+          // Handle network errors
+          console.error('Error:', error);
+        });
+    };
+
+
+    const handleCancelBooking = () => {
+      // Define your backend API endpoint
+      const apiUrl = 'https://autowa-backend.onrender.com/api/booking/set/status';
+
+      // Prepare the request body
+      const requestBody = {
+        id: id,
+        status: "Cancelled"
+      };
+
+      // Send POST request to the backend API
+      fetch(apiUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      })
+        .then(async response => {
+          if (response.ok) {
+            const data = await response.json();
+            if(data.Error){
+              alert('Something went wrong, please try again later.');
+              return;
+            }
+            alert('Order '+ id + ' Cancelled Successfully')
+            showPopup = !showPopup
           } else {
             // Handle failed login, maybe display an error message to the user
             alert('Internal Server Error. Please try again Later.');
@@ -128,8 +185,10 @@ export default function Dashboard() {
 
 
   const togglePopup = () => {
-    console.log("Hi")
-    setShowPopup(!showPopup);
+    fetchBookingNotCompleted();
+    if(id != ""){
+      setShowPopup(!showPopup);
+    }
   };
 
   return (
@@ -265,7 +324,35 @@ export default function Dashboard() {
         <TouchableWithoutFeedback onPress={togglePopup}>
           <View style={styles.popupContainer}>
             <View style={styles.popup}>
-              <Text style={styles.popupText}>Hi {name}</Text>
+            <View style={styles.containerImgPopup}>
+              <Image
+                style={styles.logoImgPopup}
+                source={require('../assets/AutoWa-Logo.png')}
+              />
+            </View>
+              <Text style={styles.popupTextHeader}>Active Booking Status</Text>
+              <Text style={styles.popupText}>Booking ID : {id}</Text>
+              <Text style={styles.popupText}>Booking Name : {booking_name}</Text>
+              <Text style={styles.popupText}>Status : {status}</Text>
+              <Text style={styles.popupText}>Customer Name : {name}</Text>
+              <Text style={styles.popupText}>Customer Notes : {customer_special_notes}</Text>
+              <View
+                style={{
+                  backgroundColor: 'rgb(252, 80, 43)',
+                  alignItems: 'center',
+                  borderRadius: 10,
+                  padding: 10,
+                  marginLeft: '18%',
+                  marginRight: '18%',
+                  marginTop: '12%',
+                  marginBottom: '10%',
+                }}>
+                <TouchableOpacity title="cancelBooking" onPress={handleCancelBooking}>
+                  <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white', marginBottom: 5, marginTop: 5, marginLeft: 5, marginRight: 5}}>
+                    Cancel Booking
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </TouchableWithoutFeedback>
@@ -412,12 +499,30 @@ const styles = StyleSheet.create({
   },
   popup: {
     backgroundColor: 'white',
-    padding: 20,
+    padding: 50,
     borderRadius: 10,
-    alignItems: 'center',
+    alignItems: 'left',
   },
   popupText: {
     fontSize: 18,
-    fontWeight: 'bold',
-  }
+    fontWeight: '400',
+    marginBottom: 20,
+  },
+  popupTextHeader: {
+    fontSize: 24,
+    fontWeight: '700',
+    marginBottom :40,
+    textAlign: 'center',
+  },
+  containerImgPopup: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    marginRight: 8,
+  },
+  logoImgPopup: {
+    height: 128,
+    width: 128,
+    alignItems: 'center',
+  },
 });

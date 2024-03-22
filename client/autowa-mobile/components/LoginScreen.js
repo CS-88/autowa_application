@@ -37,7 +37,7 @@ import { getVerifiedEmail, setVerifiedEmail } from '../services/LocalStorage';
               return;
             }
             await setVerifiedEmail(data.email);
-            console.log(await getVerifiedEmail())
+            //console.log(await getVerifiedEmail())
             navigation.navigate('Home');
           } else {
             // Handle failed login, maybe display an error message to the user
@@ -85,6 +85,7 @@ import { getVerifiedEmail, setVerifiedEmail } from '../services/LocalStorage';
             placeholder="Email"
             placeholderTextColor="rgba(118, 118, 118, 0.7)"
             onChangeText={setEmail}
+            value='shenal@gmail.com'
           />
           <TextInput
             style={{
@@ -103,6 +104,7 @@ import { getVerifiedEmail, setVerifiedEmail } from '../services/LocalStorage';
             placeholder="Password"
             placeholderTextColor="rgba(118, 118, 118, 0.7)"
             onChangeText={setPassword}
+            value='user123'
 
           />
           <TouchableOpacity>
