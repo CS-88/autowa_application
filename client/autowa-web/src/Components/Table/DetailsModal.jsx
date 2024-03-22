@@ -29,7 +29,6 @@ const DetailsModal = ({ rowData, additionalDetails, onClose }) => {
       // Handle error here, if necessary
     }
   };
-  
 
   return (
     <div className="details-modal">
@@ -47,11 +46,16 @@ const DetailsModal = ({ rowData, additionalDetails, onClose }) => {
         onChange={handleNoteChange}
       />
       <div className="button-container">
-        <button onClick={() => handleUpdateStatus("Pending")}>Wait</button>
-        <button onClick={() => handleUpdateStatus("Declined")}>Decline</button>
-        <button onClick={() => handleUpdateStatus("Approved")}>Accept</button>
-        <button onClick={() => handleUpdateStatus("Completed")}>Complete</button>
-
+        {rowData.status !== "Completed" && rowData.status !== "Cancelled" && rowData.status !== "Declined" && (
+          <>
+            <button onClick={() => handleUpdateStatus("Pending")}>Wait</button>
+            <button onClick={() => handleUpdateStatus("Declined")}>Decline</button>
+            <button onClick={() => handleUpdateStatus("Approved")}>Accept</button>
+          </>
+        )}
+        {rowData.status === "Pending" && (
+          <button onClick={() => handleUpdateStatus("Completed")}>Complete</button>
+        )}
       </div>
       <button onClick={onClose}>Close</button>
     </div>

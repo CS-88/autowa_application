@@ -1,5 +1,7 @@
+// App.jsx
+
 import React, { useState } from 'react';
-import { UilBars, UilSignOutAlt, UilEstate, UilClipboardAlt, UilUsersAlt, UilPackage, UilChart } from '@iconscout/react-unicons';
+import { UilBars, UilSignOutAlt, UilEstate, UilClipboardAlt, UilPackage, UilChart } from '@iconscout/react-unicons';
 import { motion } from 'framer-motion';
 import './App.css';
 import './Components/Sidebar.css';
@@ -10,9 +12,21 @@ import Footer from './Components/Footer/footer';
 import PendingBooking from './Components/PendingBooking/PendingBooking';
 import CompletedServices from './Components/CompletedServices/CompletedServices';
 import VehicleTracking from './Components/VehicleTracking/VehicleTracking';
+import Login from '../src/Components/Login/Login';
 
 function App() {
   const [active, setActive] = useState("Dashboard");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogin = (userData) => {
+    setIsLoggedIn(true);
+    console.log('Logged in user:', userData);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('userEmail'); // Clear email data from local storage
+    setIsLoggedIn(false); // Update isLoggedIn state
+  };
 
   const Sidebar = ({ onSidebarItemClick }) => {
     const [selected, setSelected] = useState(0);
@@ -88,7 +102,7 @@ function App() {
               </div>
             ))}
             {/* signoutIcon */}
-            <div className="menuItem">
+            <div className="menuItem" onClick={handleLogout}>
               <UilSignOutAlt />
             </div>
           </div>
@@ -100,13 +114,19 @@ function App() {
   return (
     <div className="App">
       <div className="AppGlass">
-        <Sidebar onSidebarItemClick={setActive} />
-        {active === 'Dashboard' && <MainDash />}
-        {active === 'Pending Booking' && <PendingBooking />}
-        {active === 'Completed Services' && <CompletedServices />}
-        {active === 'Vehicle Tracking' && <VehicleTracking />}
-        <RightSide />
-        <Footer />
+        {isLoggedIn ? (
+          <>
+            <Sidebar onSidebarItemClick={setActive} />
+            {active === 'Dashboard' && <MainDash />}
+            {active === 'Pending Booking' && <PendingBooking />}
+            {active === 'Completed Services' && <CompletedServices />}
+            {active === 'Vehicle Tracking' && <VehicleTracking />}
+            <RightSide />
+            <Footer />
+          </>
+        ) : (
+          <Login onLogin={handleLogin} />
+        )}
       </div>
     </div>
   );

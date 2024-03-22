@@ -1,11 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
+const RecordModal = ({ onClose, customerName, customerVno, serviceEmail, customerEmail }) => {
+  const [customerData, setCustomerData] = useState({
+    mobile_no: '',
+    vehicle_model: '',
+    mileage: ''
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:5500/api/customer/get', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email: customerEmail }),
+        });
+  
+        if (response.ok) {
+          const data = await response.json();
+          setCustomerData(data);
+          console.log('Customer data fetched successfully:', data);
+        } else {
+          console.error('Failed to fetch customer data:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching customer data:', error);
+      }
+    };
+  
+    fetchData();
+  
+    return () => {
+    };
+  }, [customerEmail]); 
+
+  
   const [serviceOption, setServiceOption] = useState('Checked-in');
-  const [carWashChecked, setCarWashChecked] = useState(false);
-  const [washVacuumChecked, setWashVacuumChecked] = useState(false);
-  const [washInteriorCleanUpChecked, setWashInteriorCleanUpChecked] = useState(false);
-  const [fullServiceChecked, setFullServiceChecked] = useState(false);
+  const [engine, setEngine] = useState({
+    oilLevelConditon: false,
+    mount_tension: false,
+    steering_oil_level: false,
+    transmission_oil: false
+  });
+  const [electricalAccessories, setElectricalAccessories] = useState({
+    horn: false,
+    wipers_and_washers: false,
+    radio: false,
+    heater: false,
+    air_conditioner: false,
+    temp_guage: false,
+    oil_light_guage: false,
+    instruments_w_light: false,
+    srs_functions_w_light: false,
+    abs_functions_w_light: false,
+    front_lights: false,
+    rear_lights: false,
+    power_shutters: false,
+    electrical_mirrors: false
+  });
+  const [coolingAndFuelSystem, setCoolingAndFuelSystem] = useState({
+    radiator_coolant: false,
+    ac_fan: false,
+    air_filter: false
+  });
+
+  const [showPopup, setShowPopup] = useState(false); 
 
   const modalStyle = {
     position: 'fixed',
@@ -13,7 +74,7 @@ const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
     left: '0',
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent black overlay
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -37,29 +98,42 @@ const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
     setServiceOption(option);
   };
 
-  const handleSendInvoice = () => {
-    // Implement logic for sending the invoice
-    console.log('Sending invoice...');
-    // Call the onSendInvoice prop if provided
-    if (onSendInvoice) {
-      onSendInvoice();
+  const handleSendRecord = async () => {
+    // Construct data object to send to backend
+    const data = {
+      customer_name: customerName,
+      customer_email: customerEmail,
+      service_center_email: serviceEmail, 
+      mobile_no: customerData.mobileNo, 
+      vehicle_no: customerVno,
+      model_year: customerData.modelYear, 
+      odometer: customerData.odometer, 
+      engine: engine,
+      electrical_accessories: electricalAccessories,
+      service_options: {
+        checked_in: serviceOption === 'Checked-in',
+        tires_and_wheels: serviceOption === 'Tires and Wheels'
+      },
+      cooling_and_fuel_system: coolingAndFuelSystem
+    };
+
+    try {
+      const response = await fetch('http://localhost:5500/api/serviceRecord/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setShowPopup(true); // Show the popup
+      } else {
+        console.error('Failed to send service record:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error sending service record:', error);
     }
-  };
-
-  const handleCarWashChange = () => {
-    setCarWashChecked(!carWashChecked);
-  };
-
-  const handleWashVacuumChange = () => {
-    setWashVacuumChecked(!washVacuumChecked);
-  };
-
-  const handleWashInteriorCleanUpChange = () => {
-    setWashInteriorCleanUpChecked(!washInteriorCleanUpChecked);
-  };
-
-  const handleFullServiceChange = () => {
-    setFullServiceChecked(!fullServiceChecked);
   };
 
   return (
@@ -69,28 +143,32 @@ const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
         <form style={formStyle}>
           <div className="form-group">
             <label>Name:</label>
-            <input type="text" value={data.name} readOnly />
+            <input type="text" value={customerName} readOnly />
           </div>
-         
-          
           <div className="form-group">
-            <label>Date:</label>
-            <input type="date" readOnly />
+            <label>Customer Email:</label>
+            <input type="text" value={customerEmail} readOnly />
           </div>
-          
           <div className="form-group">
-            <label>Model/Year:</label>
-            <input type="text" readOnly />
+            <label>Service Center Email:</label>
+            <input type="text" value={serviceEmail} readOnly />
           </div>
           <div className="form-group">
             <label>Vehicle No:</label>
-            <input type="text" readOnly />
+            <input type="text" value={customerVno} readOnly />
+          </div>
+          <div className="form-group">
+            <label> Vehicle Model:</label>
+            <input type="text" value={customerData.vehicle_model || ''} readOnly />
+          </div>
+          <div className="form-group">
+            <label>Mobile No:</label>
+            <input type="text" value={customerData.mobile_no || ''} readOnly />
           </div>
           <div className="form-group">
             <label>ODO Meter:</label>
-            <input type="text" readOnly />
+            <input type="text" value={customerData.mileage || ''} readOnly />
           </div>
-        
           <div className="form-group">
             <label>Service Options:</label>
             <div>
@@ -99,6 +177,7 @@ const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
                   type="radio"
                   name="serviceOption"
                   value="Checked-in"
+                  checked={serviceOption === 'Checked-in'}
                   onChange={() => handleServiceOptionChange('Checked-in')}
                 />
                 Checked-in
@@ -110,6 +189,7 @@ const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
                   type="radio"
                   name="serviceOption"
                   value="Tires and Wheels"
+                  checked={serviceOption === 'Tires and Wheels'}
                   onChange={() => handleServiceOptionChange('Tires and Wheels')}
                 />
                 Tires and Wheels
@@ -118,120 +198,48 @@ const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
           </div>
           <div className="form-group">
             <label>Engine:</label>
-            <div>
-              <label>
-                <input type="checkbox" value="Oil Leavel/Condition" /> Oil Leavel/Condition
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="Mount/Tenstionrs" /> Mount/Tenstionrs
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="Steering Oil Leavel" /> Steering Oil Leavel
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="Transmisson Oil " /> Transmisson Oil 
-              </label>
-            </div>
-          </div>
-          <div className="form-group">
-            <label>Cooling & Fuel System:</label>
-            <div>
-              <label>
-                <input type="checkbox" value="Radiator Coolent" /> Radiator Coolent
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="A/C Fan" /> A/C Fan
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="Air Filter" /> Air Filter
-              </label>
-            </div>
-            
+            {Object.keys(engine).map((key, index) => (
+              <div key={index}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={engine[key]}
+                    onChange={() => setEngine(prevState => ({ ...prevState, [key]: !prevState[key] }))}
+                  />
+                  {key}
+                </label>
+              </div>
+            ))}
           </div>
           <div className="form-group">
             <label>Electrical Accessories:</label>
-            <div>
-              <label>
-                <input type="checkbox" value="Horn" /> Horn
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="Wipers/Washers" /> Wipers/Washers
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="Radio" /> Radio
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="Heater" /> Heater
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="Air Coditioner" /> Air Coditioner
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="Temp.Gauge" /> Temp.Gauge
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="OilLight/Gauge" /> OilLight/Gauge
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="Instrumnets w/Light" /> Instrumnets w/Light
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="SRS Function w/Light" /> SRS Function w/Light
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="ABS w/light" /> ABS w/light
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="Front Light" /> Front Light
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="Rear Light" /> Rear Light
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="Power shutters" /> Power shutters
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="Electrical Mirror" /> Electrical Mirror
-              </label>
-            </div>
-            
-
+            {Object.keys(electricalAccessories).map((key, index) => (
+              <div key={index}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={electricalAccessories[key]}
+                    onChange={() => setElectricalAccessories(prevState => ({ ...prevState, [key]: !prevState[key] }))}
+                  />
+                  {key}
+                </label>
+              </div>
+            ))}
+          </div>
+          <div className="form-group">
+            <label>Cooling & Fuel System:</label>
+            {Object.keys(coolingAndFuelSystem).map((key, index) => (
+              <div key={index}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={coolingAndFuelSystem[key]}
+                    onChange={() => setCoolingAndFuelSystem(prevState => ({ ...prevState, [key]: !prevState[key] }))}
+                  />
+                  {key}
+                </label>
+              </div>
+            ))}
           </div>
         </form>
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
@@ -243,7 +251,7 @@ const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
               borderRadius: '5px',
               marginRight: '10px',
             }}
-            onClick={handleSendInvoice}
+            onClick={handleSendRecord}
           >
             Send Service Record
           </button>
@@ -264,4 +272,4 @@ const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
   );
 };
 
-export default InvoiceModal;
+export default RecordModal;

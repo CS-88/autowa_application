@@ -1,0 +1,68 @@
+.login-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url('../Login/img1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+  }
+  
+  /* Ensure form elements are properly aligned */
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  /* Style error messages */
+  .error {
+    color: red;
+  }
+  
+  .form-box {
+    color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0.8); /* Background color for the form box */
+    padding: 60px; /* Padding around the entire form */
+    border-radius: 10px; /* Border radius */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Box shadow */
+    border: 2px solid rgb(255, 255, 255);
+  
+    /* Flexbox styles */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; /* Center vertically and horizontally */
+  }
+  
+  
+  .form-group-container {
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Border styling */
+    border-radius: 5px; /* Border radius */
+    padding: 10px; /* Padding around the form groups */
+    margin-bottom: 20px; /* Margin to separate form groups */
+  }
+  button[type="submit"] {
+    /* Your existing button styles */
+    background-color: #ffffff; /* Green background color */
+    margin-left: 51px;
+    color: rgb(0, 0, 0); /* Text color */
+    padding: 5px 30px; /* Padding */   
+    border: none; /* Remove border */
+    border-radius: 5px; /* Border radius */
+    cursor: pointer; /* Cursor style */
+    transition: background-color 0.3s, color 0.3s; /* Smooth transition for background and text color */
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #39b9d9; /* Darker green background color on hover */
+    color: rgb(255, 255, 255); /* Text color */
+
+  }
+ 
+  

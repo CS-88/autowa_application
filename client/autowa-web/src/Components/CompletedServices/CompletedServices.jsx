@@ -54,25 +54,38 @@ const CompletedServicesDetails = ({ selectedTask, onCloseModal }) => {
       {selectedTask ? (
         <>
           <img src={Car} alt="car" style={{ maxWidth: '10%', marginBottom: '2px' }} />
-          <h2>{selectedTask.title}</h2>
-          <p>{selectedTask.description}</p>
+          <h2>{selectedTask.customer_name}</h2>
+          <h3>{selectedTask.id}</h3>
+          <p>{selectedTask.customer_special_notes ? selectedTask.customer_special_notes : "No special note"}</p>
           <div>
-            <button onClick={handleViewServiceRecord}>View Service Record</button>
+            <button onClick={handleViewServiceRecord}>Create Service Record</button>
             <button onClick={openInvoiceModal}>Update Invoice</button>
           </div>
           {isInvoiceModalOpen && (
+            
             <InvoiceModal
-              data={selectedTask} // Pass the necessary data here
+              data={selectedTask} 
               onClose={onCloseModal}
-            />
+              customerName={selectedTask.customer_name} 
+              customerVno={selectedTask.customer_vehicle_number} 
+              customerEmail={selectedTask.customer_email}
+              serviceEmail={selectedTask.service_center_email} 
+
+              />
           )}
+          
+          {console.log("ID in CompletedServicesDetails:", selectedTask.id)}
+
           {isRecordModalOpen && (
             <RecordModal
-              data={selectedTask} // Pass the necessary data here
+              customerName={selectedTask.customer_name} 
+              customerVno={selectedTask.customer_vehicle_number} 
+              serviceEmail={selectedTask.service_center_email} 
+              customerEmail={selectedTask.customer_email}
               onClose={onCloseModal}
             />
           )}
-        </>
+</>
       ) : (
         <p>Select a task to view details</p>
       )}
@@ -86,12 +99,13 @@ const CompletedServices = () => {
 
   const fetchBookings = async () => {
     try {
+      const email = JSON.parse(localStorage.getItem('userEmail'));
       const response = await fetch("http://localhost:5500/api/booking/get", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ "service_center_email": "automirage@gmail.com" })
+        body: JSON.stringify({ "service_center_email": email })
       });
       if (!response.ok) {
         throw new Error("Failed to fetch data");
@@ -99,7 +113,7 @@ const CompletedServices = () => {
       const data = await response.json();
       console.log("Fetched data:", data);
       // Filter out approved, declined, and pending bookings
-      const completedBookings = data.filter(booking => !['approved', 'declined', 'pending'].includes(booking.status.toLowerCase()));
+      const completedBookings = data.filter(booking => !['approved', 'declined', 'pending','cancelled'].includes(booking.status.toLowerCase()));
       setTasksData(completedBookings);
     } catch (error) {
       console.error("Error fetching data:", error);
