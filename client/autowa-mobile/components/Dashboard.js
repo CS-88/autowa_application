@@ -66,9 +66,9 @@ export default function Dashboard() {
     };
 
 
-    const fetchBooking = async () => {
+    const fetchBookingNotCompleted = async () => {
       // Define your backend API endpoint
-      const apiUrl = 'https://autowa-backend.onrender.com/api/booking/get';
+      const apiUrl = 'https://autowa-backend.onrender.com/api/booking/get/not/completed';
 
       let customer_email = await getVerifiedEmail();
       let name = ""

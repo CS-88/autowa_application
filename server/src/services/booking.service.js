@@ -112,7 +112,7 @@ class FileService {
     //booking of a customer for a particular service center with booking that is not confirmed
     async getBookingByNotCompleted(body) {
         try {
-            let result = await this.MongooseServiceInstance.find( { service_center_email : body.service_center_email, customer_email : body.customer_email })
+            let result = await this.MongooseServiceInstance.find( { customer_email : body.customer_email })
             let arr = [];
 
             for(let i=0; i<result.length; i++){
