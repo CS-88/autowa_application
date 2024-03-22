@@ -47,12 +47,13 @@ const PendingBooking = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
+        const email = JSON.parse(localStorage.getItem('userEmail'));
         const response = await fetch("http://localhost:5500/api/booking/get", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ "service_center_email": "automirage@gmail.com" })
+          body: JSON.stringify({ "service_center_email": email })
         });
         if (!response.ok) {
           throw new Error("Failed to fetch data");
@@ -95,7 +96,7 @@ const PendingBooking = () => {
   ];
 
   // Filter out bookings with status "Approved" or "Declined"
-  const filteredPendingBookings = pendingBookings.filter(booking => booking.status !== "Approved" && booking.status !== "Declined" && booking.status !== "Completed");
+  const filteredPendingBookings = pendingBookings.filter(booking => booking.status !== "Approved" && booking.status !== "Declined" && booking.status !== "Completed" && booking.status !== "Cancelled");
 
   return (
     <div style={{ display: 'flex' }}>

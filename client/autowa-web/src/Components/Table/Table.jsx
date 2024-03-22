@@ -16,53 +16,55 @@ export default function BasicTable() {
   const [additionalDetails, setAdditionalDetails] = useState(null);
 
   useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const response = await fetch("http://localhost:5500/api/booking/get", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ "service_center_email": "automirage@gmail.com" })
-        });
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const data = await response.json();
-        // Set only the last 4 records
-        setTableData(data.slice(-4));
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-  
     fetchBookings();
   }, []);
 
+  const fetchBookings = async () => {
+    try {
+      // Retrieve email from localStorage
+      const email = JSON.parse(localStorage.getItem('userEmail'));
+      const response = await fetch("http://localhost:5500/api/booking/get", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ "service_center_email": email })
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const data = await response.json();
+      // Set only the last 4 records
+      setTableData(data.slice(-4));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   const fetchAdditionalDetails = async (id) => {
     try {
-        const response = await fetch("http://localhost:5500/api/booking/details/get", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ id })
-        });
-        if (!response.ok) {
-            throw new Error("Failed to fetch additional details");
-        }
-        const data = await response.json();
-        setAdditionalDetails(data);
+      const response = await fetch("http://localhost:5500/api/booking/details/get", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ id })
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch additional details");
+      }
+      const data = await response.json();
+      setAdditionalDetails(data);
     } catch (error) {
-        console.error("Error fetching additional details:", error);
+      console.error("Error fetching additional details:", error);
     }
-};
+  };
 
-const handleDetailsClick = (row) => {
-  setSelectedRowData(row);
-  setIsModalOpen(true);
-  fetchAdditionalDetails(row.id); // Fetch additional details including updated status
-};
+  const handleDetailsClick = (row) => {
+    setSelectedRowData(row);
+    setIsModalOpen(true);
+    fetchAdditionalDetails(row.id); // Fetch additional details including updated status
+  };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
@@ -70,9 +72,14 @@ const handleDetailsClick = (row) => {
     setAdditionalDetails(null);
   };
 
+  const handleRefresh = () => {
+    fetchBookings();
+  };
+
   return (
     <div className="Table">
       <h3>Recent Bookings</h3>
+      <button onClick={handleRefresh}>Refresh</button>
       <TableContainer
         component={Paper}
         style={{ boxShadow: "0px 13px 20px 0px #80808029" }}
@@ -99,9 +106,9 @@ const handleDetailsClick = (row) => {
                 <TableCell align="left">{row.id}</TableCell>
                 <TableCell align="left">{row.date}</TableCell>
                 <TableCell align="left">
-                <div className={`status-box ${row.status === 'Pending' ? 'yellow' : row.status === 'Completed' ? 'blue' : row.status === 'Approved' ? 'green' : row.status === 'Declined' ? 'red' : ''}`}>
-                {row.status}
-                </div>
+                  <div className={`status-box ${row.status === 'Pending' ? 'yellow' : row.status === 'Completed' ? 'blue' : row.status === 'Approved' ? 'green' : row.status === 'Declined' ? 'red' : row.status === 'Cancelled' ? 'red': ''}`}>
+                    {row.status}
+                  </div>
                 </TableCell>
 
                 <TableCell align="left" className="Details">

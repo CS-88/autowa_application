@@ -1,6 +1,57 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
+const InvoiceModal = ({ data, onClose, customerName, customerVno, serviceEmail, customerEmail }) => {
+  const [customerData, setCustomerData] = useState({
+    vehicle_model: '',
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch customer data from the backend based on customerEmail
+        const response = await fetch('http://localhost:5500/api/customer/get', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          // Pass the customer email in the request body
+          body: JSON.stringify({ email: customerEmail }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          // Update state with fetched customer data
+          setCustomerData(data);
+          console.log('Customer data fetched successfully:', data);
+        } else {
+          console.error('Failed to fetch customer data:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching customer data:', error);
+      }
+    };
+
+    fetchData();
+
+    return () => {
+      
+    };
+  }, [customerEmail]); 
+
+  const [serviceOption, setServiceOption] = useState('Checked-in');
+  const [service, setservice] = useState({
+    car_wash: false,
+    wash_and_vacuum: false,
+    wash_and_interior_clean_up: false,
+    full_service: false
+  });
+
+  const [tel, setTel] = useState('');
+  const [regNo, setRegNo] = useState('');
+  const [address, setAddress] = useState('');
+  const [invoice, setInvoice] = useState('');
+
+
   const modalStyle = {
     position: 'fixed',
     top: '0',
@@ -18,7 +69,7 @@ const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
     padding: '20px',
     borderRadius: '8px',
     width: '90%', // Adjust the width as needed
-  maxWidth: '800px', // Set a maximum width if desired
+    maxWidth: '800px', // Set a maximum width if desired
   };
 
   const formStyle = {
@@ -26,47 +77,96 @@ const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
     gridTemplateColumns: '1fr 1fr', // Two columns layout
     gap: '10px', // Gap between form elements
   };
-  const handleSendInvoice = () => {
-    // Implement logic for sending the invoice
-    console.log('Sending invoice...');
-    // Call the onSendInvoice prop if provided
-    if (onSendInvoice) {
-      onSendInvoice();
-    }
+
+  const handleServiceOptionChange = (option) => {
+    setServiceOption(option);
   };
 
+  const handleSendInvoice = async () => {
+    const data = {
+      invoice_no: invoice,
+      name: customerName,
+      address: address,
+      tel: tel,
+      date: '',
+      registration_no: regNo,
+      model_year: customerData.modelYear,
+      vehicle_number: customerVno,
+      service_center_email: serviceEmail,
+      customer_email: '',
+      service: service,
+      service_options: {
+        checked_in: serviceOption === 'Checked-in',
+        tires_and_wheels: serviceOption === 'Tires and Wheels'
+      },
+    };
+
+    try {
+      const response = await fetch('http://localhost:5500/api/invoice/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      // Check if the request was successful (status code 2xx)
+      if (response.ok) {
+        
+      } else {
+        
+        console.error('Failed to send Invoice:', response.statusText);
+      }
+    } catch (error) {
+      
+      console.error('Error sending Invoice:', error);
+    }
+  };
+  const date = new Date().toLocaleDateString();
   return (
     <div style={modalStyle}>
       <div style={contentStyle}>
         <h2 style={{ marginBottom: '20px' }}>Invoice</h2>
         <form style={formStyle}>
+        <div className="form-group">
+            <label>Invoice No:</label>
+            <input type="text" value={invoice} onChange={(e) => setInvoice(e.target.value)} />
+          </div>
           <div className="form-group">
             <label>Name:</label>
-            <input type="text" value={data.name} readOnly />
+            <input type="text" value={customerName} readOnly />
+          </div>
+          <div className="form-group">
+            <label>Customer Email:</label>
+            <input type="text" value={customerEmail} readOnly />
+          </div>
+          <div className="form-group">
+            <label> Date:</label>
+            <input type="text" value={date} readOnly />
+          </div> 
+          <div className="form-group">
+            <label>Service Center Email:</label>
+            <input type="text" value={serviceEmail} readOnly />
           </div>
           <div className="form-group">
             <label>Address:</label>
-            <input type="text" value={data.address} readOnly />
+            <input type="text" value={address} onChange={(e) => setAddress(e.target.value)} />
           </div>
           <div className="form-group">
             <label>Tel:</label>
-            <input type="tel" value={data.tel} readOnly />
-          </div>
-          <div className="form-group">
-            <label>Date:</label>
-            <input type="date" readOnly />
+            <input type="tel" value={tel} onChange={(e) => setTel(e.target.value)} />
           </div>
           <div className="form-group">
             <label>Registration No:</label>
-            <input type="text" readOnly />
+            <input type="text" value={regNo} onChange={(e) => setRegNo(e.target.value)} />
           </div>
           <div className="form-group">
-            <label>Model/Year:</label>
-            <input type="text" readOnly />
+            <label>Model:</label>
+            <input type="text" value={customerData.vehicle_model} readOnly />
           </div>
           <div className="form-group">
             <label>Vehicle No:</label>
-            <input type="text" readOnly />
+            <input type="text" value={customerVno} readOnly />
           </div>
           <div className="form-group">
             <label>Autowa Invoice</label>
@@ -79,6 +179,7 @@ const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
                   type="radio"
                   name="serviceOption"
                   value="Checked-in"
+                  checked={serviceOption === 'Checked-in'}
                   onChange={() => handleServiceOptionChange('Checked-in')}
                 />
                 Checked-in
@@ -90,36 +191,32 @@ const InvoiceModal = ({ data, onClose, onSendInvoice }) => {
                   type="radio"
                   name="serviceOption"
                   value="Tires and Wheels"
+                  checked={serviceOption === 'Tires and Wheels'}
                   onChange={() => handleServiceOptionChange('Tires and Wheels')}
                 />
                 Tires and Wheels
               </label>
             </div>
           </div>
+
           <div className="form-group">
             <label>Service:</label>
-            <div>
-              <label>
-                <input type="checkbox" value="Car wash" /> Car wash
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="Wash & Vacuum" /> Wash & Vacuum
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="Wash & Interior Clean Up" /> Wash & Interior Clean Up
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" value="Full Service" /> Full Service
-              </label>
-            </div>
+            {Object.keys(service).map((key, index) => (
+              <div key={index}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={service[key]}
+                    onChange={() => setservice(prevState => ({ ...prevState, [key]: !prevState[key] }))}
+                  />
+                  {key}
+                </label>
+              </div>
+            ))}
           </div>
+
         </form>
+
         <div style={{ textAlign: 'center', marginTop: '20px' }}>
           <button
             style={{
