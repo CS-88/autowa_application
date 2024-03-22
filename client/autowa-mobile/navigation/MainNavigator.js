@@ -8,6 +8,7 @@ import Invoice from '../components/Invoice';
 import ServiceRecords from '../components/ServiceRecords';
 import ConfirmBookings from '../components/ConfirmBookings';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { getVerifiedEmail } from '../services/LocalStorage';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();

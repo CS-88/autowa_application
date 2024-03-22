@@ -1,20 +1,58 @@
-import {
-    View,
-    StyleSheet,
-    Image,
-    Text,
-    TouchableOpacity,
-    TextInput,
-  } from 'react-native';
+import { View, StyleSheet, Image, Text, TouchableOpacity, TextInput } from 'react-native';
+import React, { useState } from 'react';
+import { getVerifiedEmail, setVerifiedEmail } from '../services/LocalStorage';
   
   export default function LoginScreen({ navigation }) {
     const buttonText1 = 'Log in';
     const buttonText2 = 'Sign in with Google';
     const buttonText3 = 'Sign up';
     const indexOfG = buttonText2.indexOf('G');
+    
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    
     const handleLogin = () => {
-      navigation.navigate('Home');
+      // Define your backend API endpoint
+      const apiUrl = 'https://autowa-backend.onrender.com/api/auth/login/mobile';
+
+      // Prepare the request body
+      const requestBody = {
+        email: email,
+        password: password
+      };
+
+      // Send POST request to the backend API
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      })
+        .then(async response => {
+          if (response.ok) {
+            const data = await response.json();
+            if(data.Error === "Email or Password is Incorrect"){
+              alert('Invalid email or password. Please try again.');
+              return;
+            }
+            await setVerifiedEmail(data.email);
+            console.log(await getVerifiedEmail())
+            navigation.navigate('Home');
+          } else {
+            // Handle failed login, maybe display an error message to the user
+            alert('Internal Server Error. Please try again Later.');
+          }
+        })
+        .catch(error => {
+          // Handle network errors
+          console.error('Error:', error);
+        });
     };
+
+    const handleSignUp = () => {
+      navigation.navigate('SignUp');
+    }; 
   
     return (
       <View
@@ -44,8 +82,9 @@ import {
               marginLeft: '12%',
               marginRight: '12%',
             }}
-            placeholder="Username"
-            placeholderTextColor="rgba(118, 118, 118, 0.7)" 
+            placeholder="Email"
+            placeholderTextColor="rgba(118, 118, 118, 0.7)"
+            onChangeText={setEmail}
           />
           <TextInput
             style={{
@@ -62,7 +101,9 @@ import {
             }}
             secureTextEntry
             placeholder="Password"
-            placeholderTextColor="rgba(118, 118, 118, 0.7)" 
+            placeholderTextColor="rgba(118, 118, 118, 0.7)"
+            onChangeText={setPassword}
+
           />
           <TouchableOpacity>
             <Text
@@ -156,10 +197,7 @@ import {
               marginLeft: '38%',
               marginRight: '38%',
             }}>
-            <TouchableOpacity
-              onPress={() => {
-                alert('Sign up pressed!');
-              }}>
+            <TouchableOpacity title="SignUp" onPress={handleSignUp}>
               <Text>
                 <Text style={{ textTransform: 'uppercase' }}>S</Text>
                 {buttonText3.slice(1).toLowerCase()}

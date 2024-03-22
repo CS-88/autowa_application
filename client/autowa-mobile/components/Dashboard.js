@@ -1,15 +1,9 @@
-import { useState } from 'react';
-import {
-  Image,
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-  ScrollView,
-} from 'react-native';
+import { useState, useEffect} from 'react';
+import {Image, View, TouchableOpacity, StyleSheet, Text, ScrollView , Modal, TouchableWithoutFeedback} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
+import { getVerifiedEmail } from '../services/LocalStorage';
 
 export default function Dashboard() {
   const navigation = useNavigation();
@@ -17,8 +11,104 @@ export default function Dashboard() {
   const handleButtonPress = (screenName) => {
     navigation.navigate(screenName);
   };
+  
 
   const [image, setImage] = useState(null); // Initialize image with null
+  let [url, setApiImage] = useState(null); 
+  let [name, setName] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
+
+   useEffect(() => {
+    fetchApiImage(); // Call fetchApiImage when the component mounts
+  }, []);
+
+  const fetchApiImage = async () => {
+      // Define your backend API endpoint
+      const apiUrl = 'https://autowa-backend.onrender.com/api/customer/get';
+
+      let customer_email = await getVerifiedEmail();
+      let name = ""
+      // Prepare the request body
+      const requestBody = {
+        email: customer_email
+      };
+
+      console.log(requestBody.email + " In home");
+
+      // Send POST request to the backend API
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      })
+        .then(async response => {
+          if (response.ok) {
+            const data = await response.json();
+            if(data.Error){
+              alert('Something went wrong, please try again later.');
+              return;
+            }
+            url = data.url;
+            name = data.name
+            setApiImage(url);
+            setName(name)
+          } else {
+            // Handle failed login, maybe display an error message to the user
+            alert('Internal Server Error. Please try again Later.');
+          }
+        })
+        .catch(error => {
+          // Handle network errors
+          console.error('Error:', error);
+        });
+    };
+
+
+    const fetchBooking = async () => {
+      // Define your backend API endpoint
+      const apiUrl = 'https://autowa-backend.onrender.com/api/booking/get';
+
+      let customer_email = await getVerifiedEmail();
+      let name = ""
+      // Prepare the request body
+      const requestBody = {
+        email: customer_email
+      };
+
+      console.log(requestBody.email + " In home");
+
+      // Send POST request to the backend API
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      })
+        .then(async response => {
+          if (response.ok) {
+            const data = await response.json();
+            if(data.Error){
+              alert('Something went wrong, please try again later.');
+              return;
+            }
+            url = data.url;
+            name = data.name
+            setApiImage(url);
+            setName(name)
+          } else {
+            // Handle failed login, maybe display an error message to the user
+            alert('Internal Server Error. Please try again Later.');
+          }
+        })
+        .catch(error => {
+          // Handle network errors
+          console.error('Error:', error);
+        });
+    };
+
 
   const addImage = async () => {
     let _image = await ImagePicker.launchImageLibraryAsync({
@@ -36,17 +126,23 @@ export default function Dashboard() {
     }
   };
 
+
+  const togglePopup = () => {
+    console.log("Hi")
+    setShowPopup(!showPopup);
+  };
+
   return (
     <>
       <View style={{ flex: 1, backgroundColor: 'rgb(255,255,255)' }}>
         <View style={styles.container}>
           <View style={imageUploaderStyles.container}>
-            {image && ( // Only render Image if image has a valid URI
-              <Image
-                source={{ uri: image }}
-                style={{ width: 70, height: 70 }}
-              />
-            )}
+              {image && ( // Only render Image if image has a valid URI
+                <Image
+                  source={{ uri: image }}
+                  style={{ flex: 1, width: '100%', height: '100%' }}
+                />
+              )}
             <View style={imageUploaderStyles.uploadBtnContainer}>
               <TouchableOpacity
                 onPress={addImage}
@@ -57,7 +153,7 @@ export default function Dashboard() {
           </View>
           <View>
             <Text style={{ marginVertical: 25, fontSize: 16, paddingLeft: 15 }}>
-              Hi Sultan
+              Hi {name}
             </Text>
           </View>
           <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: 2 }}>
@@ -66,7 +162,16 @@ export default function Dashboard() {
         </View>
 
         <View style={styles.rectangle1}>
-          <View style={styles.square1}></View>
+        <TouchableOpacity onPress={togglePopup} style={styles.showBookingDetailContainer}>
+          <View style={styles.square1Image}>
+            {url && ( // Only render Image if image has a valid URI
+              <Image
+                source={{ uri: url }}
+                style={{ width: "350%", height: "100%", flex: 1 }}
+              />
+            )}
+          </View>
+          </TouchableOpacity>
           <View style={styles.verticalLine}></View>
           <View style={styles.rectangle2}>
             <Text
@@ -76,7 +181,7 @@ export default function Dashboard() {
                 fontSize: 10,
                 marginTop: '10%',
               }}>
-              24/02/2024
+              24/06/2024
             </Text>
             <Text
               style={{
@@ -151,6 +256,20 @@ export default function Dashboard() {
           </View>
         </ScrollView>
       </View>
+      {/* Popup */}
+      <Modal
+        visible={showPopup}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={togglePopup}>
+        <TouchableWithoutFeedback onPress={togglePopup}>
+          <View style={styles.popupContainer}>
+            <View style={styles.popup}>
+              <Text style={styles.popupText}>Hi {name}</Text>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </Modal>
     </>
   );
 }
@@ -215,6 +334,26 @@ const styles = StyleSheet.create({
     //borderWidth: 2, // specify the border width
     //borderColor: 'black', // specify the border color
   },
+  square1Image: {
+    height: '100%',
+    width: '40%',
+    backgroundColor: 'white',
+    borderRadius: 15, // Adjust as needed
+    marginRight: 10, // Space between the square and the rectangle
+    //borderWidth: 2, // specify the border width
+    //borderColor: 'black', // specify the border color
+  },
+  showBookingDetailContainer: {
+    marginLeft: '5%',
+    marginTop: '4.5%',
+    height: '69%',
+    width: '28%',
+    backgroundColor: 'white',
+    borderRadius: 15, // Adjust as needed
+    marginRight: 10, // Space between the square and the rectangle
+    //borderWidth: 2, // specify the border width
+    //borderColor: 'black', // specify the border color
+  },
   rectangle2: {
     marginLeft: '2%',
     marginTop: '8%',
@@ -265,4 +404,20 @@ const styles = StyleSheet.create({
     marginBottom: '5%',
     marginRight: 15,
   },
+  popupContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  popup: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  popupText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  }
 });

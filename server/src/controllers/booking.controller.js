@@ -1,7 +1,7 @@
 const file = require( "../services/booking.service" );
 const FileService = new file();
 
-module.exports = { createBooking , getBooking , getBookingByStatus, getBookingById , getBookingByBookingName , getBookingByNumberPlate, setBookingStatus, deleteBooking };
+module.exports = { createBooking , getBooking , getBookingByNotCompleted, getBookingByStatus, getBookingById , getBookingByBookingName , getBookingByNumberPlate, setBookingStatus, deleteBooking };
 
     //Create new booking
     async function createBooking ( req, res ) {
@@ -54,6 +54,19 @@ module.exports = { createBooking , getBooking , getBookingByStatus, getBookingBy
     async function getBookingByBookingName ( req, res ) {
         try {
             const result = await FileService.getBookingByBookingName( req.body);
+            return res.send( result );
+        } catch ( err ) {
+            console.log( err ); 
+            res.status( 500 ).send( { Status: 500 , Success: false, Error : `${err.name} : ${err.message}`  } );
+        }
+    }
+
+
+
+    //booking of a customer for a particular service center with booking that is not confirmed
+    async function getBookingByNotCompleted ( req, res ) {
+        try {
+            const result = await FileService.getBookingByNotCompleted( req.body);
             return res.send( result );
         } catch ( err ) {
             console.log( err ); 
