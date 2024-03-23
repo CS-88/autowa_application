@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-export default function Container({ location, name }) {
+export default function Container({ location, name, email }) {
 
   const navigation = useNavigation();
 
+  const handleButtonPress = (screenName) => {
+    navigation.navigate(screenName,{email: email});
+  };
+
   return (
-    <View style={styles.container}>
-      <TouchableOpacity>
+    <View style={styles.container} >
+      <TouchableOpacity onPress={() => handleButtonPress('ConfirmBookings')}>
         <Image
           style={{ width: 120, height: 110 }}
           source={require('../assets/Service_Centre.png')}

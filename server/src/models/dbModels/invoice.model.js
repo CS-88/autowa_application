@@ -16,11 +16,21 @@ const mongoose = require("mongoose");
                 checked_in : Boolean,
                 tires_and_wheels : Boolean
             },
-            service: {
-                car_wash : Boolean,
-                wash_and_vacuum : Boolean,
-                wash_and_interior_clean_up : Boolean,
-                full_service : Boolean
+            car_wash : {
+                status : Boolean,
+                fee : String
+            },
+            wash_and_vacuum: {
+                status: Boolean,
+                fee: String
+            },
+            wash_and_interior_clean_up: {
+                status: Boolean,
+                fee: String
+            },
+            full_service: {
+                status: Boolean,
+                fee: String
             }
         },
         { 

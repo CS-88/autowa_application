@@ -85,7 +85,6 @@ import { getVerifiedEmail, setVerifiedEmail } from '../services/LocalStorage';
             placeholder="Email"
             placeholderTextColor="rgba(118, 118, 118, 0.7)"
             onChangeText={setEmail}
-            value='shenal@gmail.com'
           />
           <TextInput
             style={{
@@ -104,7 +103,6 @@ import { getVerifiedEmail, setVerifiedEmail } from '../services/LocalStorage';
             placeholder="Password"
             placeholderTextColor="rgba(118, 118, 118, 0.7)"
             onChangeText={setPassword}
-            value='user123'
 
           />
           <TouchableOpacity>
