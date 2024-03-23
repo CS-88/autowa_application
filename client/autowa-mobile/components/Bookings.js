@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import Container from './Container';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -8,19 +8,54 @@ export default function Bookings() {
   let [searchQuery, setSearchQuery] = useState('');
   let [filterByRating, setFilterByRating] = useState(false);
 
+  let [serviceCenterArray,sertServiceCenterArray] = useState([]);
+
+  useEffect(() => {
+    handleSearchByName(); // Call fetchApiImage when the component mounts
+  }, []);
+
+
+  const handleSearchByName = async () => {
+    // Define your backend API endpoint
+      const apiUrl = 'https://autowa-backend.onrender.com/api/serviceCenter/get';
+
+      // Send POST request to the backend API
+      fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then(async response => {
+          if (response.ok) {
+            const data = await response.json();
+            if(data.Error){
+              alert('Something went wrong, please try again later.');
+              return;
+            }
+            sertServiceCenterArray(data);
+          } else {
+            // Handle failed login, maybe display an error message to the user
+            alert('Internal Server Error. Please try again Later.');
+          }
+        })
+        .catch(error => {
+          // Handle network errors
+          console.error('Error:', error);
+        });
+  };
+
+  
+
+
    const handleSearch = async () => {
     try {
       // Constructing the URL based on searchQuery and filterByRating
       let url = 'https://autowa-backend.onrender.com/api/serviceCenter/get/';
-      if (filterByRating) {
-        url += 'rating';
-      } else {
-        url += 'name';
-      }
 
       if(filterByRating){
         // Send POST request to the backend API
-        fetch(url, {
+        fetch(url+'rating', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -30,11 +65,8 @@ export default function Bookings() {
           .then(async response => {
             if (response.ok) {
               const data = await response.json();
-              if(data.Error){
-                alert('Something went wrong please try again later!');
-                return;
-              }
-              console.log(data)
+              sertServiceCenterArray(data);
+              return
             } else {
               // Handle failed login, maybe display an error message to the user
               alert('Internal Server Error. Please try again Later.');
@@ -46,29 +78,28 @@ export default function Bookings() {
           });
       }
       else {
-        // let flag = /^[A-Za-z\s]*$/.test(searchQuery)
-        // if(!flag){
-        //   alert('Please enter only letters to search by name!');
-        // }
-        //else{
+        let flag = /^[A-Za-z\s]*$/.test(searchQuery)
+        if(!flag){
+          alert('Please enter only letters to search by name!');
+        }
+        else{
           // Send POST request to the backend API
-          console.log(url)
-          fetch(url, {
+          fetch(url+'name', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: ({name : searchQuery})
+            body: JSON.stringify({name : searchQuery})
           })
             .then(async response => {
               if (response.ok) {
                 let data = await response.json();
-                console.log(data[0])
-                // if(data.Error){
-                //   alert('Something went wrong please try again later!');
-                //   return;
-                // }
-                // console.log(data+" - In  Name")
+                if(data.Error != ""){
+                  alert('Something went wrong please try again later!');
+                  return;
+                }
+                sertServiceCenterArray(data);
+                return
               } else {
                 // Handle failed login, maybe display an error message to the user
                 alert('Internal Server Error. Please try again Later.');
@@ -78,14 +109,11 @@ export default function Bookings() {
               // Handle network errors
               console.error('Error:', error);
             });
-        //}
+            return
+        }
       }
-
-      console.log(filterByRating);
-      console.log(searchQuery);
+      alert('Something went wrong please try again later!')
       return;
-      
-      
       // You can add further processing or set state based on the data received
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -151,6 +179,7 @@ export default function Bookings() {
         </TouchableOpacity>
       </View>
 
+      <ScrollView style={{flex:1}}>
       <View
         style={{
           backgroundColor: 'rgb(232,232,232)',
@@ -162,22 +191,15 @@ export default function Bookings() {
             flexDirection: 'row',
             justifyContent: 'space-between',
             paddingHorizontal: 20,
-            paddingBottom: 20,
+            marginTop: 20,
+            flexWrap: 'wrap',
           }}>
-          <Container />
-          <Container />
-        </View>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            paddingHorizontal: 20,
-          }}>
-          <Container />
-          <Container />
+          {serviceCenterArray.map(serviceCenter => (
+            <Container key={serviceCenter._id}  location={serviceCenter.location} name={serviceCenter.name}/> // Assuming Container component needs a unique key prop
+          ))}
         </View>
       </View>
+      </ScrollView>
     </View>
   );
 }

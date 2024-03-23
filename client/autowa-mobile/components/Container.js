@@ -1,16 +1,14 @@
+import React, { useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-export default function Container() {
-  const navigation = useNavigation();
+export default function Container({ location, name }) {
 
-  const handleButtonPress = (screenName) => {
-    navigation.navigate(screenName);
-  };
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => handleButtonPress('ConfirmBookings')}>
+      <TouchableOpacity>
         <Image
           style={{ width: 120, height: 110 }}
           source={require('../assets/Service_Centre.png')}
@@ -23,7 +21,7 @@ export default function Container() {
               fontWeight: 'bold',
               marginBottom: 4,
             }}>
-            Kleen Park
+            {name}
           </Text>
           <Image
             style={{ width: 16, height: 16, marginLeft: 7, marginTop: 14 }}
@@ -31,7 +29,7 @@ export default function Container() {
           />
         </View>
         <Text style={{ fontSize: 15, marginBottom: 4 }}>Location:</Text>
-        <Text style={{ fontSize: 15 }}>Colombo</Text>
+        <Text style={{ fontSize: 15 }}>{location}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -45,5 +43,6 @@ const styles = StyleSheet.create({
     height: 220,
     paddingVertical: 10,
     paddingHorizontal: 10,
+    marginBottom: 20
   },
 });

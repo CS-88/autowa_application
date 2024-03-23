@@ -98,7 +98,7 @@ class FileService {
         try {
             let centers = await this.MongooseServiceInstance.find()
             if (centers == null || body.name == null) { return { status: 400 } }
-            return centers.filter((centers) => centers.name.toLocaleLowerCase().includes(body.name.toLocaleLowerCase()));
+            return await centers.filter((centers) => centers.name.toLocaleLowerCase().includes(body.name.toLocaleLowerCase()));
         }
         catch (err) {
             console.log(err)
@@ -158,8 +158,7 @@ class FileService {
         try {
                 let findCenter = await this.MongooseServiceInstance.findOne({email : body.email})
                 let result;
-
-                console.log(body.booking_date)
+                
                 if(findCenter.length != 0){
                     if(findCenter.booking_date != body.booking_date){
                         findCenter.booking_date = body.booking_date;
