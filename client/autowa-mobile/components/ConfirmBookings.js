@@ -191,7 +191,7 @@ export default function ConfirmBookings() {
 
 
   return (
-    <V1iew style={{ flex: 1, backgroundColor: 'rgb(232,232,232)' }}>
+    <View style={{ flex: 1, backgroundColor: 'rgb(232,232,232)' , alignItems: 'center'}}>
       <Text
         style={{
           fontSize: 25,
@@ -219,13 +219,7 @@ export default function ConfirmBookings() {
             flexWrap: 'wrap',
           }}>
 
-
-
-        </View>
-      </View>
-      </ScrollView>
-
-      <Text
+          <Text
         style={{
           fontSize: 20,
           textAlign: 'left',
@@ -291,7 +285,7 @@ export default function ConfirmBookings() {
           textAlign: 'left',
           paddingLeft: '10%',
           paddingRight: '10%',
-          paddingBottom: '5%',
+          paddingBottom: '10%',
         }}>
         Rating : {centerRating}
       </Text>
@@ -355,7 +349,34 @@ export default function ConfirmBookings() {
           />
         </View>
       </View>
-      <View style={{ alignItems: 'center', paddingTop: 80 }}>
+      <Text
+        style={{
+          fontSize: 20,
+          textAlign: 'left',
+          paddingLeft: '10%',
+          paddingRight: '10%',
+          paddingTop: '10%',
+        }}>
+        Special Note
+      </Text>
+      <TextInput
+            style={{
+              justifyContent: 'center',
+              color: 'black',
+              height: 60,
+              backgroundColor: 'rgb(217,217,217)',
+              borderRadius: 10,
+              marginBottom: 0,
+              paddingLeft: 15,
+              margin: 12,
+              marginLeft: '6%',
+              marginRight: '6%',
+              width: '88%',
+            }}
+            placeholder="Special Notes..."
+            placeholderTextColor="rgba(118, 118, 118, 0.7)"
+          />
+      <View style={{ alignItems: 'center', paddingTop: 50, paddingBottom: 50 , width: '100%'}}>
         <TouchableOpacity
           style={{
             height: 50,
@@ -364,11 +385,16 @@ export default function ConfirmBookings() {
             borderRadius: 100,
             alignItems: 'center',
             justifyContent: 'center',
+            margin: 'auto'
           }}>
           <Text style={{ fontSize: 20, color: 'white' }}>Confirm Booking</Text>
         </TouchableOpacity>
       </View>
-    </V1iew>
+
+        </View>
+      </View>
+      </ScrollView>
+    </View>
   );
 }
 
@@ -376,7 +402,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     borderRadius: 30,
-    marginLeft: '6%',
+    marginLeft: '4%',
     marginRight: '6%',
     paddingBottom: '6%',
     paddingVertical: 10,
