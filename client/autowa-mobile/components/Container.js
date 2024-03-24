@@ -2,9 +2,11 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-export default function Container({ location, name, email }) {
+export default function Container({ location, name, email, rating }) {
 
   const navigation = useNavigation();
+
+  console.log(location, rating)
 
   const handleButtonPress = (screenName) => {
     navigation.navigate(screenName,{email: email});
@@ -34,6 +36,8 @@ export default function Container({ location, name, email }) {
         </View>
         <Text style={{ fontSize: 15, marginBottom: 4 }}>Location:</Text>
         <Text style={{ fontSize: 15 }}>{location}</Text>
+        <Text style={{ fontSize: 15, marginBottom: 4, marginTop : 4 }}>Rating:</Text>
+        <Text style={{ fontSize: 15 }}>{rating}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -43,8 +47,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     borderRadius: 20,
-    width: 135,
-    height: 220,
+    width: 165,
+    height: 290,
     paddingVertical: 10,
     paddingHorizontal: 10,
     marginBottom: 20

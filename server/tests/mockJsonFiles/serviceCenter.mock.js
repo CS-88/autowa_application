@@ -20,7 +20,7 @@ const mockObject = {
         status: true,
         fee: "4000"
     },
-    wash_and_vacuum: {
+    wash_and_vacum: {
         status: true,
         fee: "7000"
     },

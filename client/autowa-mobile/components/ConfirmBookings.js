@@ -143,10 +143,10 @@ export default function ConfirmBookings() {
             status: isChecked1,
             fee: centerObject.car_wash.fee
           },
-          // wash_vacum: {
-          //   status: isChecked2,
-          //   fee:centerObject.wash_vacum.fee
-          // },
+          wash_and_vacum: {
+            status: isChecked2,
+            fee:centerObject.wash_and_vacum.fee
+          },
           wash_and_interior_clean_up: {
             status: isChecked3,
             fee: centerObject.wash_and_interior_clean_up.fee
@@ -173,8 +173,7 @@ export default function ConfirmBookings() {
               alert('Something went wrong, please try again later.');
               return;
             }
-            console.log("Hi")
-            
+            Alert.alert('Confirmation','Booking Confirmed');
           } else {
             // Handle failed login, maybe display an error message to the user
             alert('Internal Server Error. Please try again Later.');

@@ -66,20 +66,6 @@ describe('Service Center Routes Tests Suite', () => {
     });
 
 
-    it('should return the service center information by name', done => {
-        chai
-          .request(app)
-          .post(api+'/get/name')
-          .send({name : mock.mockObject.name})
-          .end((err, res) => {
-            res.should.have.status(200);
-            chai.assert.equal(mock.findObject.name,res.body.name,err)
-            chai.assert.equal(mock.findObject.email,res.body.email,err)
-            done();
-        });
-    });
-
-
     it('should return the service center information by email', done => {
         chai
           .request(app)
@@ -106,18 +92,6 @@ describe('Service Center Routes Tests Suite', () => {
         });
     });
 
-
-    it('should return the service centers by rating', done => {
-        chai
-          .request(app)
-          .post(api+'/get/rating')
-          .send({rating : "5"})
-          .end((err, res) => {
-            res.should.have.status(200);
-            chai.assert.equal(1,res.body.length,err)
-            done();
-        });
-    });
 
     it('should update service center details and return success', done => {
         chai

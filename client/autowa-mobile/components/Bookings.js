@@ -116,7 +116,6 @@ export default function Bookings() {
             return
         }
       }
-      alert('Something went wrong please try again later!')
       return;
       // You can add further processing or set state based on the data received
     } catch (error) {
@@ -194,12 +193,12 @@ export default function Bookings() {
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
-            paddingHorizontal: 20,
+            paddingHorizontal: 8,
             marginTop: 20,
             flexWrap: 'wrap',
           }}>
           {serviceCenterArray.map(serviceCenter => (
-            <Container key={serviceCenter._id}  location={serviceCenter.location} name={serviceCenter.name} email={serviceCenter.email}/> // Assuming Container component needs a unique key prop
+            <Container key={serviceCenter._id}  location={serviceCenter.location} name={serviceCenter.name} email={serviceCenter.email} rating={serviceCenter.rating}/> // Assuming Container component needs a unique key prop
           ))}
         </View>
       </View>

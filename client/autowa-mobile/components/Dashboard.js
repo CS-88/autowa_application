@@ -339,6 +339,7 @@ export default function Dashboard() {
               <Text style={styles.popupText}>Status : {status}</Text>
               <Text style={styles.popupText}>Customer Name : {name}</Text>
               <Text style={styles.popupText}>Customer Notes : {customer_special_notes}</Text>
+              {status === 'Pending' && (
               <View
                 style={{
                   backgroundColor: 'rgb(252, 80, 43)',
@@ -356,6 +357,7 @@ export default function Dashboard() {
                   </Text>
                 </TouchableOpacity>
               </View>
+              )}
             </View>
           </View>
         </TouchableWithoutFeedback>

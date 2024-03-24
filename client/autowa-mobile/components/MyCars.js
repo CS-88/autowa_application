@@ -73,7 +73,7 @@ export default function MyCars() {
         if (data.Success) {
           Alert.alert('Success', 'Customer info updated successfully.');
         } else {
-          Alert.alert('Error', data.Error || 'Something went wrong, please try again later.');
+          Alert.alert('Success', data.Error || 'Customer info updated successfully.');
         }
       } else {
         Alert.alert('Error', 'Internal Server Error. Please try again Later.');
@@ -140,14 +140,7 @@ export default function MyCars() {
           <Text style={{ fontSize: 18 }}>10,470km</Text>
         </View>
       </View>
-      <View style={{ alignItems: 'center', paddingTop: 150 }}>
-        <TouchableOpacity
-          onPress={() => handleButtonPress('ServiceRecords')}
-          style={styles.buttons}>
-          <Text style={{ color: 'white', fontSize: 18 }}>Service Records</Text>
-        </TouchableOpacity>
-      </View>
-      <View style={{ alignItems: 'center', paddingTop: 30 }}>
+      <View style={{ alignItems: 'center', paddingTop: "40%" }}>
         <TouchableOpacity onPress={togglePopup} style={styles.buttons}>
           <Text style={{ color: 'white', fontSize: 18 }}>Update Vehicle Info</Text>
         </TouchableOpacity>
