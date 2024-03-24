@@ -56,15 +56,17 @@ export default function ConfirmBookings() {
               console.log('Something went wrong, please try again later.');
               return;
             }
-            setCenterName(data.name)
-            setCenterMobileNo(data.mobile_no);
-            setCenterDescription(data.description);
-            setCenterAboutUs(data.about_us)
-            setCenterLocation(data.location);
-            setCenterOpenDays(data.open_days);
-            setCenterOpenHours(data.open_hours);
-            setCenterRating(data.rating);
-            setCenterObject(data)
+            await setCenterName(data.name)
+            await setCenterMobileNo(data.mobile_no);
+            await setCenterDescription(data.description);
+            await setCenterAboutUs(data.about_us)
+            await setCenterLocation(data.location);
+            await setCenterOpenDays(data.open_days);
+            await setCenterOpenHours(data.open_hours);
+            await setCenterRating(data.rating);
+            await setCenterObject(data)
+
+            console.log(email)
 
           } else {
             // Handle failed login, maybe display an error message to the user
@@ -100,7 +102,6 @@ export default function ConfirmBookings() {
             }
             await setCustomerName(data.name)
             await setCustomerVehicleNo(data.vehicle_number);
-            console.log(customerEmail, customerName, customerVehicleNo, centerEmail );
           } else {
             // Handle failed login, maybe display an error message to the user
             alert('Internal Server Error. Please try again Later.');
@@ -123,6 +124,9 @@ export default function ConfirmBookings() {
 
 
 
+      console.log('HIII')
+
+      console.log(centerObject.full_service.fee);
       // Prepare the request body
       let requestBody = {
         id:"",
@@ -140,52 +144,56 @@ export default function ConfirmBookings() {
         customer_special_notes : customerSpecialNotes,
         review_number : "0",
         review_message : "none",
-        car_wash: {
-          status: false,
-          fee: ""
-        },
-        wash_vacum: {
-          status: false,
-          fee: ""
-        },
-        wash_and_interior_clean_up: {
-          status: false,
-          fee: ""
-        },
-        full_service: {
-          status: false,
-          fee: ""
+        service: {
+          car_wash: {
+            status: false,
+            fee: centerObject.car_wash.fee
+          },
+          wash_vacum: {
+            status: false,
+            fee:centerObject.wash_vacum.fee
+          },
+          wash_and_interior_clean_up: {
+            status: false,
+            fee: centerObject.wash_and_interior_clean_up.fee
+          },
+          full_service: {
+            status: false,
+            fee: centerObject.full_service.fee
+          }
         }
       };
 
-      // Send POST request to the backend API
-      fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(requestBody)
-      })
-        .then(async response => {
-          if (response.ok) {
-            const data = await response.json();
-            if(data.Error){
-              alert('Something went wrong, please try again later.');
-              return;
-            }
-            url = data.url;
-            name = data.name
-            setApiImage(url);
-            setName(name)
-          } else {
-            // Handle failed login, maybe display an error message to the user
-            alert('Internal Server Error. Please try again Later.');
-          }
-        })
-        .catch(error => {
-          // Handle network errors
-          console.error('Error:', error);
-        });
+      console.log();
+
+      // // Send POST request to the backend API
+      // fetch(apiUrl, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify(requestBody)
+      // })
+      //   .then(async response => {
+      //     if (response.ok) {
+      //       const data = await response.json();
+      //       if(data.Error){
+      //         alert('Something went wrong, please try again later.');
+      //         return;
+      //       }
+      //       url = data.url;
+      //       name = data.name
+      //       setApiImage(url);
+      //       setName(name)
+      //     } else {
+      //       // Handle failed login, maybe display an error message to the user
+      //       alert('Internal Server Error. Please try again Later.');
+      //     }
+      //   })
+      //   .catch(error => {
+      //     // Handle network errors
+      //     console.error('Error:', error);
+      //   });
     };
 
 
@@ -375,6 +383,7 @@ export default function ConfirmBookings() {
             }}
             placeholder="Special Notes..."
             placeholderTextColor="rgba(118, 118, 118, 0.7)"
+            onChangeText={setCustomerSpecialNotes}
           />
       <View style={{ alignItems: 'center', paddingTop: 50, paddingBottom: 50 , width: '100%'}}>
         <TouchableOpacity
@@ -386,7 +395,8 @@ export default function ConfirmBookings() {
             alignItems: 'center',
             justifyContent: 'center',
             margin: 'auto'
-          }}>
+          }}
+           onPress={confirmBooking}>
           <Text style={{ fontSize: 20, color: 'white' }}>Confirm Booking</Text>
         </TouchableOpacity>
       </View>
