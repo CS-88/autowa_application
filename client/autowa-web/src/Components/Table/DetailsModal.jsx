@@ -11,7 +11,7 @@ const DetailsModal = ({ rowData, additionalDetails, onClose }) => {
 
   const handleUpdateStatus = async (newStatus) => {
     try {
-      const currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      const currentTime = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
       console.log("Completion Time:", currentTime); // Log completion time
       setCompletionTime(currentTime);
   
@@ -51,14 +51,14 @@ const DetailsModal = ({ rowData, additionalDetails, onClose }) => {
         onChange={handleNoteChange}
       />
       <div className="button-container">
-        {rowData.status !== "Completed" && rowData.status !== "Cancelled" && rowData.status !== "Declined" && (
+        {(rowData.status !== "Completed" && rowData.status !== "Cancelled" && rowData.status !== "Declined") && (
           <>
             <button onClick={() => handleUpdateStatus("Pending")}>Wait</button>
             <button onClick={() => handleUpdateStatus("Declined")}>Decline</button>
             <button onClick={() => handleUpdateStatus("Approved")}>Accept</button>
           </>
         )}
-        {rowData.status === "Pending" && (
+        {(rowData.status === "Pending" || rowData.status === "Approved") && (
           <button onClick={() => handleUpdateStatus("Completed")}>Complete</button>
         )}
       </div>

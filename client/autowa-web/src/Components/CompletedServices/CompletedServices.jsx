@@ -75,7 +75,6 @@ const CompletedServicesDetails = ({ selectedTask, onCloseModal }) => {
           )}
           
           {console.log("ID in CompletedServicesDetails:", selectedTask.id)}
-          // Render RecordModal component with relevant props
           {isRecordModalOpen && (
             <RecordModal
               customerName={selectedTask.customer_name} 
@@ -100,7 +99,7 @@ const CompletedServices = () => {
   const fetchBookings = async () => {
     try {
       const email = JSON.parse(localStorage.getItem('userEmail'));
-      const response = await fetch("http://localhost:5500/api/booking/get", {
+      const response = await fetch("https://autowa-backend.onrender.com/api/booking/get", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
