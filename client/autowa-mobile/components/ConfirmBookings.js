@@ -66,8 +66,6 @@ export default function ConfirmBookings() {
             await setCenterRating(data.rating);
             await setCenterObject(data)
 
-            console.log(email)
-
           } else {
             // Handle failed login, maybe display an error message to the user
             alert('Internal Server Error. Please try again Later.');
@@ -117,24 +115,20 @@ export default function ConfirmBookings() {
 
     const confirmBooking = async () => {
       // Define your backend API endpoint
-      const apiUrl = 'https://autowa-backend.onrender.com/api/customer/get';
+      const apiUrl = 'https://autowa-backend.onrender.com/api/booking/create';
 
       var time = new Date();
       let startTime = time.toLocaleString('en-US', { hour: '2-digit', minute: 'numeric', hour12: true })
 
 
-
-      console.log('HIII')
-
-      console.log(centerObject.full_service.fee);
       // Prepare the request body
       let requestBody = {
         id:"",
         date: new Date().toLocaleDateString(),
         start_time:startTime,
-        end_time:'',
+        end_time: "",
         status: "Pending",
-        booking_name : customer_name + " " + customer_vehicle_number,
+        booking_name : "",
         decline_note : "none",
         service_center_note : "none",
         service_center_email : centerEmail,
@@ -149,51 +143,49 @@ export default function ConfirmBookings() {
             status: false,
             fee: centerObject.car_wash.fee
           },
-          wash_vacum: {
-            status: false,
-            fee:centerObject.wash_vacum.fee
-          },
-          wash_and_interior_clean_up: {
-            status: false,
-            fee: centerObject.wash_and_interior_clean_up.fee
-          },
-          full_service: {
-            status: false,
-            fee: centerObject.full_service.fee
-          }
+          // wash_vacum: {
+          //   status: false,
+          //   fee:centerObject.wash_vacum.fee
+          // },
+          // wash_and_interior_clean_up: {
+          //   status: false,
+          //   fee: centerObject.wash_and_interior_clean_up.fee
+          // },
+          // full_service: {
+          //   status: false,
+          //   fee: centerObject.full_service.fee
+          // }
         }
-      };
+      }
 
-      console.log();
+      //console.log(requestBody)  
 
-      // // Send POST request to the backend API
-      // fetch(apiUrl, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify(requestBody)
-      // })
-      //   .then(async response => {
-      //     if (response.ok) {
-      //       const data = await response.json();
-      //       if(data.Error){
-      //         alert('Something went wrong, please try again later.');
-      //         return;
-      //       }
-      //       url = data.url;
-      //       name = data.name
-      //       setApiImage(url);
-      //       setName(name)
-      //     } else {
-      //       // Handle failed login, maybe display an error message to the user
-      //       alert('Internal Server Error. Please try again Later.');
-      //     }
-      //   })
-      //   .catch(error => {
-      //     // Handle network errors
-      //     console.error('Error:', error);
-      //   });
+      // Send POST request to the backend API
+      fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      })
+        .then(async response => {
+          console.log(response)
+          if (response.ok) {
+            const data = await response.json();
+            if(data.Error){
+              alert('Something went wrong, please try again later.');
+              return;
+            }
+            
+          } else {
+            // Handle failed login, maybe display an error message to the user
+            alert('Internal Server Error. Please try again Later.');
+          }
+        })
+        .catch(error => {
+          // Handle network errors
+          console.error('Error:', error);
+        });
     };
 
 
