@@ -8,11 +8,15 @@ export default function Bookings() {
   let [searchQuery, setSearchQuery] = useState('');
   let [filterByRating, setFilterByRating] = useState(false);
 
-  let [serviceCenterArray,sertServiceCenterArray] = useState([]);
+  let [serviceCenterArray,setServiceCenterArray] = useState([]);
 
   useEffect(() => {
     handleSearchByName(); // Call fetchApiImage when the component mounts
   }, []);
+  
+  const handleButtonPress = (screenName) => {
+    navigation.navigate(screenName);
+  };
 
 
   const handleSearchByName = async () => {
@@ -29,11 +33,11 @@ export default function Bookings() {
         .then(async response => {
           if (response.ok) {
             const data = await response.json();
-            if(data.Error){
-              alert('Something went wrong, please try again later.');
+            if(data.length == 0){
+              alert('No Records Found!');
               return;
             }
-            sertServiceCenterArray(data);
+            setServiceCenterArray(data);
           } else {
             // Handle failed login, maybe display an error message to the user
             alert('Internal Server Error. Please try again Later.');
@@ -65,7 +69,7 @@ export default function Bookings() {
           .then(async response => {
             if (response.ok) {
               const data = await response.json();
-              sertServiceCenterArray(data);
+              setServiceCenterArray(data);
               return
             } else {
               // Handle failed login, maybe display an error message to the user
@@ -94,11 +98,11 @@ export default function Bookings() {
             .then(async response => {
               if (response.ok) {
                 let data = await response.json();
-                if(data.Error != ""){
-                  alert('Something went wrong please try again later!');
+                if(data.length == 0){
+                alert('No Records Found!');
                   return;
                 }
-                sertServiceCenterArray(data);
+                setServiceCenterArray(data);
                 return
               } else {
                 // Handle failed login, maybe display an error message to the user
@@ -195,7 +199,7 @@ export default function Bookings() {
             flexWrap: 'wrap',
           }}>
           {serviceCenterArray.map(serviceCenter => (
-            <Container key={serviceCenter._id}  location={serviceCenter.location} name={serviceCenter.name}/> // Assuming Container component needs a unique key prop
+            <Container key={serviceCenter._id}  location={serviceCenter.location} name={serviceCenter.name} email={serviceCenter.email}/> // Assuming Container component needs a unique key prop
           ))}
         </View>
       </View>

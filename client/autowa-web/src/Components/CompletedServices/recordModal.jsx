@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-
+// State for storing customer data fetched from the server
 const RecordModal = ({ onClose, customerName, customerVno, serviceEmail, customerEmail }) => {
   const [customerData, setCustomerData] = useState({
     mobile_no: '',
     vehicle_model: '',
     mileage: ''
   });
-
+// Fetch customer data from the server when component mounts or when customerEmail changes
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -16,7 +16,7 @@ const RecordModal = ({ onClose, customerName, customerVno, serviceEmail, custome
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ email: customerEmail }),
-        });
+        });// Cleanup function
   
         if (response.ok) {
           const data = await response.json();
@@ -27,7 +27,7 @@ const RecordModal = ({ onClose, customerName, customerVno, serviceEmail, custome
         }
       } catch (error) {
         console.error('Error fetching customer data:', error);
-      }
+      }// State for service options
     };
   
     fetchData();
@@ -43,7 +43,7 @@ const RecordModal = ({ onClose, customerName, customerVno, serviceEmail, custome
     mount_tension: false,
     steering_oil_level: false,
     transmission_oil: false
-  });
+  });// State for electrical accessories status
   const [electricalAccessories, setElectricalAccessories] = useState({
     horn: false,
     wipers_and_washers: false,
@@ -59,12 +59,12 @@ const RecordModal = ({ onClose, customerName, customerVno, serviceEmail, custome
     rear_lights: false,
     power_shutters: false,
     electrical_mirrors: false
-  });
+  });// State for cooling and fuel system status
   const [coolingAndFuelSystem, setCoolingAndFuelSystem] = useState({
     radiator_coolant: false,
     ac_fan: false,
     air_filter: false
-  });
+  });// State for showing popup
 
   const [showPopup, setShowPopup] = useState(false); 
 
