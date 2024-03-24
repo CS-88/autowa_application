@@ -41,7 +41,7 @@ const InvoiceModal = ({ data, onClose, customerName, customerVno, serviceEmail, 
   const [serviceOption, setServiceOption] = useState('Checked-in');
   const [service, setservice] = useState({
     car_wash: false,
-    wash_and_vacuum: false,
+    wash_and_vacum: false,
     wash_and_interior_clean_up: false,
     full_service: false
   });
@@ -88,12 +88,12 @@ const InvoiceModal = ({ data, onClose, customerName, customerVno, serviceEmail, 
       name: customerName,
       address: address,
       tel: tel,
-      date: '',
+      date: date,
       registration_no: regNo,
       model_year: customerData.modelYear,
       vehicle_number: customerVno,
       service_center_email: serviceEmail,
-      customer_email: '',
+      customer_email: customerEmail,
       service: service,
       service_options: {
         checked_in: serviceOption === 'Checked-in',
@@ -168,9 +168,7 @@ const InvoiceModal = ({ data, onClose, customerName, customerVno, serviceEmail, 
             <label>Vehicle No:</label>
             <input type="text" value={customerVno} readOnly />
           </div>
-          <div className="form-group">
-            <label>Autowa Invoice</label>
-          </div>
+         
           <div className="form-group">
             <label>Service Options:</label>
             <div>

@@ -1,336 +1,127 @@
-import { useState } from 'react';
-import {
-  Modal,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native';
-import { CheckBox } from 'react-native-elements';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { getVerifiedEmail } from '../services/LocalStorage';
 
-export default function Invoice() {
-  const [modalVisible, setModalVisible] = useState(false);
-  const screenHeight = Dimensions.get('window').height;
 
-  const Name = 'Sultan';
-  const currentDate = new Date();
-  const formattedDate = currentDate.toLocaleDateString('en-US', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-  const Model = 'Toyota Prius 2014';
-  const VehicleNo = '2296';
-  const ODOMeter = '';
+const ServiceRecords = () => {
+  const [serviceData, setServiceData] = useState(null);
+
+  useEffect(() => {
+    // Fetch data from backend when the component mounts
+    fetchData();
+  }, []);
+
+
+  const fetchData = async () => {
+    try {
+      const customer_email = await getVerifiedEmail(); 
+      const response = await fetch('https://autowa-backend.onrender.com/api/invoice/get/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ customer_email: customer_email }),
+      });
+  
+      if (!response.ok) {
+        const data = await response.json();
+        // throw new Error('Failed to fetch data'); // Removed comment
+      }
+  
+      const data = await response.json();
+      setServiceData(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // Handle error state or display error message
+    }
+  };
+  const renderValue = (value) => {
+    return value ? '✅' : '❌';
+  };
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <TouchableOpacity
-        onPress={() => setModalVisible(true)}
-        style={{
-          height: 60,
-          width: 180,
-          backgroundColor: 'rgb(176,216,218)',
-          borderRadius: 100,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <Text style={{ color: 'white', fontSize: 18 }}>Open Invoice</Text>
-      </TouchableOpacity>
-      <Modal
-        visible={modalVisible}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setModalVisible(false)}>
-        <View
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <View
-            style={{
-              backgroundColor: 'white',
-              padding: 20,
-              borderRadius: 10,
-              height: screenHeight * 0.8,
-            }}>
-            <ScrollView>
-              <View style={{ padding: 20 }}>
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                    fontSize: 23,
-                    paddingTop: 25,
-                    paddingBottom: 10,
-                  }}>
-                  INSPECTION REPORT
-                </Text>
-                <View style={styles.container}>
-                  <Text>Name: </Text>
-                  <Text>{Name}</Text>
-                </View>
-                <View style={styles.container}>
-                  <Text>Date: </Text>
-                  <Text>{formattedDate}</Text>
-                </View>
-                <View style={styles.container}>
-                  <Text>Model/Year: </Text>
-                  <Text>{Model}</Text>
-                </View>
-                <View style={styles.container}>
-                  <Text>Vehicle No: </Text>
-                  <Text>{VehicleNo}</Text>
-                </View>
-                <View style={styles.container}>
-                  <Text>ODO Meter: </Text>
-                  <Text>{ODOMeter}</Text>
-                </View>
-
-                <View style={{ paddingTop: 30 }}>
-                  <Text>Engine:</Text>
-                </View>
-
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={false}
-                    disabled={true}
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text style={styles.text}>Oil Level/Condition</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={true}
-                    disabled={true}
-                    checkedColor="black"
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text>Mount/Tenstionrs</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={true}
-                    disabled={true}
-                    checkedColor="black"
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text>Steering Oil Level</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={false}
-                    disabled={true}
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text style={styles.text}>Transmission Oil</Text>
-                </View>
-
-                <View style={{ paddingTop: 10 }}>
-                  <Text>Electrical Accessories:</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={false}
-                    disabled={true}
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text style={styles.text}>Horn</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={false}
-                    disabled={true}
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text style={styles.text}>Wipers/Wahers</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={false}
-                    disabled={true}
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text style={styles.text}>Radio</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={false}
-                    disabled={true}
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text style={styles.text}>Heater</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={true}
-                    disabled={true}
-                    checkedColor="black"
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text style={styles.text}>Air Conditioner</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={true}
-                    disabled={true}
-                    checkedColor="black"
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text style={styles.text}>Temp.Gauge</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={false}
-                    disabled={true}
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text style={styles.text}>OilLight/Gauge</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={false}
-                    disabled={true}
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text style={styles.text}>Instruments w/Light</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={false}
-                    disabled={true}
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text style={styles.text}>SRS Function w/Light</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={false}
-                    disabled={true}
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text style={styles.text}>ABS w/Light</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={false}
-                    disabled={true}
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text style={styles.text}>Front Light</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={false}
-                    disabled={true}
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text style={styles.text}>Rear Light</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={true}
-                    disabled={true}
-                    checkedColor="black"
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text style={styles.text}>Power shutters</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={false}
-                    disabled={true}
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text style={styles.text}>Electrical Mirror</Text>
-                </View>
-
-                <View style={{ paddingTop: 10 }}>
-                  <Text>Service Options:</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={false}
-                    disabled={true}
-                    containerStyle={styles.circularCheckedCheckbox}
-                  />
-                  <Text style={styles.text}>Checked-in</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={false}
-                    disabled={true}
-                    containerStyle={styles.circularUncheckedCheckbox}
-                  />
-                  <Text style={styles.text}>Tires and Wheels</Text>
-                </View>
-
-                <View style={{ paddingTop: 10 }}>
-                  <Text>Cooling & Fuel System:</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={false}
-                    disabled={true}
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text style={styles.text}>Radiator Coolent</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={false}
-                    disabled={true}
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text style={styles.text}>A/C Fan</Text>
-                </View>
-                <View style={styles.direction}>
-                  <CheckBox
-                    checked={true}
-                    disabled={true}
-                    checkedColor="black"
-                    containerStyle={styles.checkbox}
-                  />
-                  <Text style={styles.text}>Air Filter</Text>
-                </View>
-              </View>
-            </ScrollView>
-            <TouchableOpacity onPress={() => setModalVisible(false)}>
-              <Text style={{ textAlign: 'center' }}>Close</Text>
-            </TouchableOpacity>
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <View>
+        <Text style={styles.title}>Invoice</Text>
+      </View>
+      {serviceData &&
+        serviceData.map((record, index) => (
+          <View key={index} style={styles.card}>
+            {Object.entries(record).reverse().map(([key, value]) => { // Reverse the entries for each record
+              // Skip rendering for 'id', 'createdAt', and 'updatedAt' fields
+              if (key === '_id' || key === 'createdAt' || key === 'updatedAt') {
+                return null;
+              }
+              if (typeof value === 'object') {
+                return (
+                  <View key={key} style={styles.section}>
+                    <Text style={styles.sectionTitle}>{key.replace(/_/g, ' ')}</Text>
+                    {Object.entries(value).map(([subKey, subValue]) => (
+                      <View key={subKey} style={styles.item}>
+                        <Text style={styles.label}>{subKey.replace(/_/g, ' ')}</Text>
+                        <Text style={styles.value}>{renderValue(subValue)}</Text>
+                      </View>
+                    ))}
+                  </View>
+                );
+              } else {
+                return (
+                  <View key={key} style={styles.section}>
+                    <Text style={styles.sectionTitle}>{key.replace(/_/g, ' ')}</Text>
+                    <Text style={styles.value}>{String(value)}</Text>
+                  </View>
+                );
+              }
+            })}
           </View>
-        </View>
-      </Modal>
-    </View>
+        ))}
+    </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    paddingVertical: 7,
+  scrollViewContent: {
+    flexGrow: 1,
+    paddingVertical: 60,
+    paddingHorizontal: 40,
   },
-  direction: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 20,
+    elevation: 3,
+    gap:23,
   },
-  checkbox: {
-    marginRight: 0,
-    padding: 0,
+  title: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    marginBottom: 40,
+    textAlign: 'center',
+  },
+  section: {
     marginBottom: 0,
   },
-  circularCheckedCheckbox: {
-    borderRadius: 10,
-    width: 20,
-    height: 20,
-    backgroundColor: 'black',
+  sectionTitle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    textTransform: 'capitalize',
+    marginBottom: 5,
   },
-  circularUncheckedCheckbox: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
+  item: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 5,
+    
   },
-  text: {
-    paddingTop: 2,
+  label: {
+    fontSize: 16,
+    textTransform: 'capitalize',
+  },
+
+  value: {
+    fontSize: 16,
   },
 });
+
+export default ServiceRecords;

@@ -24,57 +24,62 @@ const VehicleTracking = () => {
   ];
 
   return (
-    <div style={{ display: 'flex', padding: '20px', height: '500px' }}>
-      {/* Parking Bay Component */}
-      <div style={{ flex: 1, marginRight: '20px', background: '#fff', overflowY: 'auto',padding:'10px',borderRadius: '16px'  }}>
-        <h2>Parking Bay</h2>
-        {vehicleData
-          .filter((vehicle) => vehicle.bay === 'Parking Bay')
-          .map((vehicle) => (
-            <div
-              key={vehicle.id}
-              style={{ border: '1px solid #ccc', padding: '10px', margin: '10px', cursor: 'pointer' }}
-              onClick={() => handleVehicleSelect(vehicle)}
-            >
-              <h3>{vehicle.licensePlate}</h3>
-              <p>Status: {vehicle.status}</p>
-            </div>
-          ))}
-      </div>
+    <div style={{ display: 'flex', flexDirection: 'column', padding: '20px' }}>
+      <div style={{ display: 'flex', flex: 1 }}>
+        {/* Parking Bay Component */}
+        <div style={{ flex: 1, marginRight: '20px', background: '#fff', overflowY: 'auto',padding:'10px',borderRadius: '16px' }}>
+          <h2>Parking Bay</h2>
+          {vehicleData
+            .filter((vehicle) => vehicle.bay === 'Parking Bay')
+            .map((vehicle) => (
+              <div
+                key={vehicle.id}
+                style={{ border: '1px solid #ccc', padding: '10px', margin: '10px', cursor: 'pointer' }}
+                onClick={() => handleVehicleSelect(vehicle)}
+              >
+                <h3>{vehicle.licensePlate}</h3>
+                <p>Status: {vehicle.status}</p>
+              </div>
+            ))}
+        </div>
 
-      {/* Washing Bay Component */}
-      <div style={{ flex: 1, marginRight: '20px', background: '#fff', overflowY: 'auto',padding:'10px',borderRadius: '16px' }}>
-        <h2>Washing Bay</h2>
-        {vehicleData
-          .filter((vehicle) => vehicle.bay === 'Washing Bay')
-          .map((vehicle) => (
-            <div
-              key={vehicle.id}
-              style={{ border: '1px solid #ccc', padding: '10px', margin: '10px', cursor: 'pointer' }}
-              onClick={() => handleVehicleSelect(vehicle)}
-            >
-              <h3>{vehicle.licensePlate}</h3>
-              <p>Status: {vehicle.status}</p>
-            </div>
-          ))}
-      </div>
+        {/* Washing Bay Component */}
+        <div style={{ flex: 1, marginRight: '20px', background: '#fff', overflowY: 'auto',padding:'10px',borderRadius: '16px' }}>
+          <h2>Washing Bay</h2>
+          {vehicleData
+            .filter((vehicle) => vehicle.bay === 'Washing Bay')
+            .map((vehicle) => (
+              <div
+                key={vehicle.id}
+                style={{ border: '1px solid #ccc', padding: '10px', margin: '10px', cursor: 'pointer' }}
+                onClick={() => handleVehicleSelect(vehicle)}
+              >
+                <h3>{vehicle.licensePlate}</h3>
+                <p>Status: {vehicle.status}</p>
+              </div>
+            ))}
+        </div>
 
-      {/* Interior Cleaning Component */}
-      <div style={{ flex: 1, background: '#fff', overflowY: 'auto',padding:'10px',borderRadius: '16px'  }}>
-        <h2>Interior Cleaning</h2>
-        {vehicleData
-          .filter((vehicle) => vehicle.bay === 'Interior Cleaning')
-          .map((vehicle) => (
-            <div
-              key={vehicle.id}
-              style={{ border: '1px solid #ccc', padding: '10px', margin: '10px', cursor: 'pointer' }}
-              onClick={() => handleVehicleSelect(vehicle)}
-            >
-              <h3>{vehicle.licensePlate}</h3>
-              <p>Status: {vehicle.status}</p>
-            </div>
-          ))}
+        {/* Interior Cleaning Component */}
+        <div style={{ flex: 1, background: '#fff', overflowY: 'auto',padding:'10px',borderRadius: '16px' }}>
+          <h2>Interior Cleaning</h2>
+          {vehicleData
+            .filter((vehicle) => vehicle.bay === 'Interior Cleaning')
+            .map((vehicle) => (
+              <div
+                key={vehicle.id}
+                style={{ border: '1px solid #ccc', padding: '10px', margin: '10px', cursor: 'pointer' }}
+                onClick={() => handleVehicleSelect(vehicle)}
+              >
+                <h3>{vehicle.licensePlate}</h3>
+                <p>Status: {vehicle.status}</p>
+              </div>
+            ))}
+        </div>
       </div>
+      {/* File Upload Button */}
+      <label htmlFor="file-upload" style={{ margin: '20px', padding: '10px 20px', background: '#007bff', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Browse Files</label>
+      <input type="file" id="file-upload" style={{ display: 'none' }} />
     </div>
   );
 };
