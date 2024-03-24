@@ -4,7 +4,7 @@ import CallIcon from '../PendingBooking/call.png';
 import MessageIcon from '../PendingBooking/message.png';
 import UserIcon from '../PendingBooking/user-icon.png';
 import StarIcon from '../PendingBooking/star-icon.png';
-
+// Functional component for rendering pending booking card
 const PendingBookingCard = ({ booking, handleUpdateStatus }) => {
   return (
     <div style={{ border: '1px solid #ccc', padding: '10px', margin: '10px', width: '300px' }}>
@@ -22,7 +22,7 @@ const PendingBookingCard = ({ booking, handleUpdateStatus }) => {
     </div>
   );
 };
-
+// Functional component for rendering instructor card
 const InstructorCard = ({ instructor }) => {
   return (
     <div style={{ border: '1px solid #ccc', padding: '10px', margin: '10px', width: '300px' }}>
@@ -40,10 +40,10 @@ const InstructorCard = ({ instructor }) => {
     </div>
   );
 };
-
+// Functional component for rendering pending bookings and instructors
 const PendingBooking = () => {
   const [pendingBookings, setPendingBookings] = useState([]);
-
+// Effect hook to fetch pending bookings from API
   useEffect(() => {
     const fetchBookings = async () => {
       try {
@@ -53,21 +53,21 @@ const PendingBooking = () => {
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ "service_center_email": email })
+          body: JSON.stringify({ "service_center_email": email })// Provide service center email as payload
         });
-        if (!response.ok) {
+        if (!response.ok) {// Throw error if response is not ok
           throw new Error("Failed to fetch data");
         }
-        const data = await response.json();
-        setPendingBookings(data);
+        const data = await response.json();// Parse response data
+        setPendingBookings(data);// Update state with fetched bookings
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data:", error);// Log error if fetching data fails
       }
     };
 
-    fetchBookings();
-  }, []);
-
+    fetchBookings();// Call fetchBookings function
+  }, []);// Run effect hook only once after initial render
+// Function to handle updating booking status
   const handleUpdateStatus = async (bookingId, newStatus) => {
     try {
       const response = await fetch("http://localhost:5500/api/booking/set/status", {
@@ -78,7 +78,7 @@ const PendingBooking = () => {
         body: JSON.stringify({ id: bookingId, status: newStatus }),
       });
 
-      if (!response.ok) {
+      if (!response.ok) {// Throw error if response is not ok
         throw new Error("Failed to update status");
       }
 

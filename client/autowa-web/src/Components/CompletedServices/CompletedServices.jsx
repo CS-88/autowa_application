@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import Car from './car.png';
 import InvoiceModal from '../CompletedServices/InvoiceModal';
 import RecordModal from '../CompletedServices/recordModal';
-
+// Component for rendering individual completed service cards
 const CompletedServicesCard = ({ task, onSelect, booking }) => {
   // Check if booking is available before rendering
   if (!booking) {
     return null;
   }
-
+// Check if booking is available before rendering
   return (
     <div
       style={{
@@ -31,19 +31,19 @@ const CompletedServicesCard = ({ task, onSelect, booking }) => {
     </div>
   );
 };
-
+// Component for rendering details of a selected completed service
 const CompletedServicesDetails = ({ selectedTask, onCloseModal }) => {
   const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
   const [isRecordModalOpen, setIsRecordModalOpen] = useState(false);
-
+// Function to handle opening record modal
   const handleViewServiceRecord = () => {
     setIsRecordModalOpen(true);
   };
-
+// Function to open invoice modal
   const openInvoiceModal = () => {
     setIsInvoiceModalOpen(true);
   };
-
+// Effect to reset modal states when selectedTask changes
   useEffect(() => {
     setIsInvoiceModalOpen(false);
     setIsRecordModalOpen(false);
@@ -75,7 +75,7 @@ const CompletedServicesDetails = ({ selectedTask, onCloseModal }) => {
           )}
           
           {console.log("ID in CompletedServicesDetails:", selectedTask.id)}
-
+          // Render RecordModal component with relevant props
           {isRecordModalOpen && (
             <RecordModal
               customerName={selectedTask.customer_name} 
@@ -92,42 +92,42 @@ const CompletedServicesDetails = ({ selectedTask, onCloseModal }) => {
     </div>
   );
 };
-
+// Main component for rendering completed services
 const CompletedServices = () => {
   const [selectedTask, setSelectedTask] = useState(null);
   const [tasksData, setTasksData] = useState([]);
-
+// Function to fetch completed bookings data
   const fetchBookings = async () => {
     try {
-      const email = JSON.parse(localStorage.getItem('userEmail'));
-      const response = await fetch("http://localhost:5500/api/booking/get", {
+      const email = JSON.parse(localStorage.getItem('userEmail'));// Retrieve user email from localStorage
+      const response = await fetch("http://localhost:5500/api/booking/get", {// Fetch booking data from server
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ "service_center_email": email })
+        body: JSON.stringify({ "service_center_email": email })// Send user email in request body
       });
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
-      const data = await response.json();
-      console.log("Fetched data:", data);
+      const data = await response.json();// Parse response data
+      console.log("Fetched data:", data);// Log fetched data to console
       // Filter out approved, declined, and pending bookings
       const completedBookings = data.filter(booking => !['approved', 'declined', 'pending','cancelled'].includes(booking.status.toLowerCase()));
       setTasksData(completedBookings);
-    } catch (error) {
+    } catch (error) {// Filter out approved, declined, pending, and cancelled bookings
       console.error("Error fetching data:", error);
     }
   };
-
+ // Effect to fetch completed bookings data on component mount
   useEffect(() => {
     fetchBookings();
   }, []);
-
+ // Function to handle selecting a task
   const handleTaskSelect = (task) => {
     setSelectedTask(task);
   };
-
+// Function to handle closing modal
   const handleCloseModal = () => {
     setSelectedTask(null);
   };
