@@ -9,7 +9,7 @@ const InvoiceModal = ({ data, onClose, customerName, customerVno, serviceEmail, 
     const fetchData = async () => {
       try {
         // Fetch customer data from the backend based on customerEmail
-        const response = await fetch('http://localhost:5500/api/customer/get', {
+        const response = await fetch('https://autowa-backend.onrender.com/api/customer/get', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ const InvoiceModal = ({ data, onClose, customerName, customerVno, serviceEmail, 
     };
 
     try {
-      const response = await fetch('http://localhost:5500/api/invoice/create', {
+      const response = await fetch('https://autowa-backend.onrender.com/api/invoice/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

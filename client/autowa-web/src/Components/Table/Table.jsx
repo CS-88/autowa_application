@@ -23,7 +23,7 @@ export default function BasicTable() {
     try {
       // Retrieve email from localStorage
       const email = JSON.parse(localStorage.getItem('userEmail'));
-      const response = await fetch("http://localhost:5500/api/booking/get", {
+      const response = await fetch("https://autowa-backend.onrender.com/api/booking/get", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -43,7 +43,7 @@ export default function BasicTable() {
 
   const fetchAdditionalDetails = async (id) => {
     try {
-      const response = await fetch("http://localhost:5500/api/booking/details/get", {
+      const response = await fetch("https://autowa-backend.onrender.com/api/booking/details/get", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

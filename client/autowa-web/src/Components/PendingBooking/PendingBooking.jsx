@@ -48,7 +48,7 @@ const PendingBooking = () => {
     const fetchBookings = async () => {
       try {
         const email = JSON.parse(localStorage.getItem('userEmail'));
-        const response = await fetch("http://localhost:5500/api/booking/get", {
+        const response = await fetch("https://autowa-backend.onrender.com/api/booking/get", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -70,7 +70,7 @@ const PendingBooking = () => {
 
   const handleUpdateStatus = async (bookingId, newStatus) => {
     try {
-      const response = await fetch("http://localhost:5500/api/booking/set/status", {
+      const response = await fetch("https://autowa-backend.onrender.com/api/booking/set/status", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

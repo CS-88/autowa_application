@@ -13,7 +13,7 @@ const CompactCard = ({ png: Png, color, barValue, title, setExpanded }) => {
     const fetchBookingCount = async () => {
       try {
         console.log("Fetching booking count...");
-        const response = await fetch("http://localhost:5500/api/serviceCenter/get/email", {
+        const response = await fetch("https://autowa-backend.onrender.com/api/serviceCenter/get/email", {
           method: "POST",
           headers: { 
             "Content-Type": "application/json"

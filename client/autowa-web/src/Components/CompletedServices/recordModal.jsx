@@ -10,7 +10,7 @@ const RecordModal = ({ onClose, customerName, customerVno, serviceEmail, custome
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:5500/api/customer/get', {
+        const response = await fetch('https://autowa-backend.onrender.com/api/customer/get', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -84,14 +84,14 @@ const RecordModal = ({ onClose, customerName, customerVno, serviceEmail, custome
     backgroundColor: '#fff',
     padding: '20px',
     borderRadius: '8px',
-    width: '90%', // Adjust the width as needed
-    maxWidth: '800px', // Set a maximum width if desired
+    width: '100%', // Adjust the width as needed
+    maxWidth: '1000px', // Set a maximum width if desired
   };
 
   const formStyle = {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr', // Two columns layout
-    gap: '10px', // Gap between form elements
+    gridTemplateColumns: '1fr 1fr 1fr 1fr', // Four columns layout
+    gap: '20px', // Gap between form elements
   };
 
   const handleServiceOptionChange = (option) => {
@@ -118,7 +118,7 @@ const RecordModal = ({ onClose, customerName, customerVno, serviceEmail, custome
     };
 
     try {
-      const response = await fetch('http://localhost:5500/api/serviceRecord/create', {
+      const response = await fetch('https://autowa-backend.onrender.com/api/serviceRecord/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

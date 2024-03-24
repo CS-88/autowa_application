@@ -20,8 +20,10 @@ import { getVerifiedEmail, setVerifiedEmail } from '../services/LocalStorage';
         email: email,
         password: password
       };
+      console.log(email);
+      console.log(password);
 
-      // Send POST request to the backend API
+      // Send POST request to the backend API/
       fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -36,6 +38,8 @@ import { getVerifiedEmail, setVerifiedEmail } from '../services/LocalStorage';
               alert('Invalid email or password. Please try again.');
               return;
             }
+            console.log(data)
+            console.log(data.email + " in email")
             await setVerifiedEmail(data.email);
             //console.log(await getVerifiedEmail())
             navigation.navigate('Home');
@@ -85,7 +89,6 @@ import { getVerifiedEmail, setVerifiedEmail } from '../services/LocalStorage';
             placeholder="Email"
             placeholderTextColor="rgba(118, 118, 118, 0.7)"
             onChangeText={setEmail}
-            value='shenal@gmail.com'
           />
           <TextInput
             style={{
@@ -104,7 +107,6 @@ import { getVerifiedEmail, setVerifiedEmail } from '../services/LocalStorage';
             placeholder="Password"
             placeholderTextColor="rgba(118, 118, 118, 0.7)"
             onChangeText={setPassword}
-            value='user123'
 
           />
           <TouchableOpacity>
@@ -224,4 +226,3 @@ import { getVerifiedEmail, setVerifiedEmail } from '../services/LocalStorage';
       alignItems: 'center',
     },
   });
-  

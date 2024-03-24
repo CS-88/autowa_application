@@ -10,7 +10,7 @@ function Login({ onLogin }) {
   const handleLogin = async (e) => {
     e.preventDefault(); // Prevent default form submission
     try {
-      const response = await fetch('http://localhost:5500/api/auth/login/web', {
+      const response = await fetch('https://autowa-backend.onrender.com/api/auth/login/web', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

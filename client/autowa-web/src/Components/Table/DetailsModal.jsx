@@ -3,6 +3,7 @@ import "./DetailsModal.css";
 
 const DetailsModal = ({ rowData, additionalDetails, onClose }) => {
   const [specialNote, setSpecialNote] = useState("");
+  const [completionTime, setCompletionTime] = useState(null);
 
   const handleNoteChange = (event) => {
     setSpecialNote(event.target.value);
@@ -10,12 +11,16 @@ const DetailsModal = ({ rowData, additionalDetails, onClose }) => {
 
   const handleUpdateStatus = async (newStatus) => {
     try {
-      const response = await fetch("http://localhost:5500/api/booking/set/status", {
+      const currentTime = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      console.log("Completion Time:", currentTime); // Log completion time
+      setCompletionTime(currentTime);
+  
+      const response = await fetch("https://autowa-backend.onrender.com/api/booking/set/status", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id: rowData.id, status: newStatus }), // Change rowData.status to newStatus
+        body: JSON.stringify({ id: rowData.id, status: newStatus, end_time: currentTime }), // Send completion time in the request
       });
   
       if (!response.ok) {
@@ -29,7 +34,7 @@ const DetailsModal = ({ rowData, additionalDetails, onClose }) => {
       // Handle error here, if necessary
     }
   };
-
+  
   return (
     <div className="details-modal">
       <h2>{rowData.booking_name}</h2>
@@ -57,6 +62,7 @@ const DetailsModal = ({ rowData, additionalDetails, onClose }) => {
           <button onClick={() => handleUpdateStatus("Completed")}>Complete</button>
         )}
       </div>
+      {completionTime && <p>Completed at: {completionTime}</p>}
       <button onClick={onClose}>Close</button>
     </div>
   );
