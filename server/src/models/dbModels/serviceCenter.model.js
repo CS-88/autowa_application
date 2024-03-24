@@ -22,7 +22,7 @@ const mongoose = require("mongoose");
                 status: Boolean,
                 fee: String
             },
-            wash_and_vacuum: {
+            wash_and_vacum: {
                 status: Boolean,
                 fee: String
             },

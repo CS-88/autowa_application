@@ -18,21 +18,23 @@ const mongoose = require("mongoose");
             customer_special_notes : String,
             review_number: String,
             review_message: String,
-            car_wash : {
+            service : {
+                car_wash : {
                 status : Boolean,
                 fee : String
-            },
-            wash_and_vacum: {
-                status: Boolean,
-                fee: String
-            },
-            wash_and_interior_clean_up: {
-                status: Boolean,
-                fee: String
-            },
-            full_service: {
-                status: Boolean,
-                fee: String
+                },
+                wash_and_vacum: {
+                    status: Boolean,
+                    fee: String
+                },
+                wash_and_interior_clean_up: {
+                    status: Boolean,
+                    fee: String
+                },
+                full_service: {
+                    status: Boolean,
+                    fee: String
+                }
             }
         },
         { 

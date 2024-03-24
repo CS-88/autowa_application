@@ -140,25 +140,23 @@ export default function ConfirmBookings() {
         review_message : "none",
         service: {
           car_wash: {
-            status: false,
+            status: isChecked1,
             fee: centerObject.car_wash.fee
           },
           // wash_vacum: {
-          //   status: false,
+          //   status: isChecked2,
           //   fee:centerObject.wash_vacum.fee
           // },
-          // wash_and_interior_clean_up: {
-          //   status: false,
-          //   fee: centerObject.wash_and_interior_clean_up.fee
-          // },
-          // full_service: {
-          //   status: false,
-          //   fee: centerObject.full_service.fee
-          // }
+          wash_and_interior_clean_up: {
+            status: isChecked3,
+            fee: centerObject.wash_and_interior_clean_up.fee
+          },
+          full_service: {
+            status: isChecked4,
+            fee: centerObject.full_service.fee
+          }
         }
-      }
-
-      //console.log(requestBody)  
+      } 
 
       // Send POST request to the backend API
       fetch(apiUrl, {
@@ -169,13 +167,13 @@ export default function ConfirmBookings() {
         body: JSON.stringify(requestBody)
       })
         .then(async response => {
-          console.log(response)
           if (response.ok) {
             const data = await response.json();
             if(data.Error){
               alert('Something went wrong, please try again later.');
               return;
             }
+            console.log("Hi")
             
           } else {
             // Handle failed login, maybe display an error message to the user
