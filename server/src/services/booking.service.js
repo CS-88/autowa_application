@@ -151,6 +151,11 @@ class FileService {
         try {
             let bookingExist = await this.MongooseServiceInstance.findOne( { id : body.id })
             bookingExist.status = body.status;
+            if(body.status === "Completed"){
+                var time = new Date();
+                let endTime = time.toLocaleString('en-US', { hour: '2-digit', minute: 'numeric', hour12: true })
+                bookingExist.end_time = endTime;
+            }
             let result = await this.MongooseServiceInstance.updateOne({ id: body.id }, bookingExist);
             return result;
         }
