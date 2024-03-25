@@ -60,7 +60,7 @@ app.post('/detect-license', (req, res) => {
   // Axios API call configuration
   const config = {
     method: 'post',
-    url: 'http://13.126.103.17/detect-license-plates/?location=local',
+    url: 'http://43.204.212.57/detect-license-plates/?location=local',
     headers: { 
       ...form.getHeaders(),
       'accept': 'application/json',

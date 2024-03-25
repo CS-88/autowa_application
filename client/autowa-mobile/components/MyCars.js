@@ -129,15 +129,15 @@ export default function MyCars() {
           </View>
         </View>
         <Text style={{ textAlign: 'center', paddingTop: 12, fontSize: 20 }}>
-          Toyota Prius
+          Model : {updatedCustomerObject.vehicle_model}
         </Text>
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'center',
           }}>
-          <Text style={{ fontSize: 18 }}>mileage: </Text>
-          <Text style={{ fontSize: 18 }}>10,470km</Text>
+          <Text style={{ fontSize: 20 }}>Mileage: </Text>
+          <Text style={{ fontSize: 20 }}>{updatedCustomerObject.mileage}</Text>
         </View>
       </View>
       <View style={{ alignItems: 'center', paddingTop: "40%" }}>
