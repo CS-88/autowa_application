@@ -5,7 +5,7 @@ const Footer = () => {
 const year = new Date();
 // Return JSX for Footer component
     return (
-        <footer className="copy">Copyright &copy; {year.getFullYear()}</footer>
+        <footer className="copy">AutoWa &copy; {year.getFullYear()}</footer>
     )
 
 }
