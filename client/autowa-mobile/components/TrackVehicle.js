@@ -52,15 +52,15 @@ export default function TrackVehicle() {
 
       <View style={{ paddingTop: '9%' }}>
         <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-          Your Honda Fit 2020 is currently in Wash
+          Your Honda Fit is currently in Wash
         </Text>
       </View>
       <View style={{ paddingTop: '9%' }}>
-        <Text style={{ fontSize: 17 }}>Lot No : 7</Text>
+        <Text style={{ fontSize: 17 }}>Vehicle License : SN66 XMZ</Text>
       </View>
       <View>
         <Text style={{ fontSize: 17, flexDirection: 'row' }}>
-          Attendant : Mr. Nimal
+          Client : Mr. Shenal
         </Text>
       </View>
     </View>
