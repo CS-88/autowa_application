@@ -1,0 +1,16 @@
+.details-modal {
+  /* Add your modal styles here */
+  position: fixed;
+  top: 40%;
+  left: 70%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+.Details button {
+  margin-right: 10px; 
+  padding: 2px;/* Adjust the margin as needed */
+}
+/* Add more styles as needed */

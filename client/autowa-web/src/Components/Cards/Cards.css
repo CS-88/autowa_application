@@ -1,0 +1,34 @@
+.Cards {
+  display: flex;
+  gap: 10px;
+}
+.parentContainer{
+  width: 100%;
+}
+
+@media screen and (max-width: 1200px) {
+  .Cards{
+    flex-direction: column;
+  }
+  .parentContainer{
+    height: 9rem;
+  }
+}
+
+@media screen and (max-width: 768px)
+{
+  .Cards{
+    width: 190%;
+  }
+}
+.Cards {
+  display: flex;
+  flex-direction: row; /* Set to row for left to right arrangement */
+  justify-content: space-between; /* Optional: Adjust as needed for spacing */
+  align-items: center; /* Optional: Align items as needed */
+  flex-wrap: wrap; /* Optional: Allow cards to wrap to the next row if needed */
+}
+
+.parentContainer {
+  margin: 1rem; /* Optional: Adjust as needed for spacing between cards */
+}
